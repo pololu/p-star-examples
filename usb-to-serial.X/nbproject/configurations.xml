@@ -13,40 +13,9 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="usb" displayName="usb" projectFiles="true">
-        <logicalFolder name="inc" displayName="inc" projectFiles="true">
-        </logicalFolder>
         <logicalFolder name="src" displayName="src" projectFiles="true">
           <itemPath>usb/src/usb_device.c</itemPath>
-          <itemPath>usb/src/usb_device_audio.c</itemPath>
-          <itemPath>usb/src/usb_device_ccid.c</itemPath>
           <itemPath>usb/src/usb_device_cdc.c</itemPath>
-          <itemPath>usb/src/usb_device_generic.c</itemPath>
-          <itemPath>usb/src/usb_device_hid.c</itemPath>
-          <itemPath>usb/src/usb_device_msd.c</itemPath>
-          <itemPath>usb/src/usb_device_msd_multi_sector.c</itemPath>
-          <itemPath>usb/src/usb_device_phdc.c</itemPath>
-          <itemPath>usb/src/usb_device_phdc_com_model.c</itemPath>
-          <itemPath>usb/src/usb_hal_16bit.c</itemPath>
-          <itemPath>usb/src/usb_hal_dspic33e.c</itemPath>
-          <itemPath>usb/src/usb_hal_pic24.c</itemPath>
-          <itemPath>usb/src/usb_hal_pic24e.c</itemPath>
-          <itemPath>usb/src/usb_hal_pic24f.c</itemPath>
-          <itemPath>usb/src/usb_host.c</itemPath>
-          <itemPath>usb/src/usb_host_android.c</itemPath>
-          <itemPath>usb/src/usb_host_audio_v1.c</itemPath>
-          <itemPath>usb/src/usb_host_cdc.c</itemPath>
-          <itemPath>usb/src/usb_host_cdc_interface.c</itemPath>
-          <itemPath>usb/src/usb_host_generic.c</itemPath>
-          <itemPath>usb/src/usb_host_hid.c</itemPath>
-          <itemPath>usb/src/usb_host_hid_parser.c</itemPath>
-          <itemPath>usb/src/usb_host_midi.c</itemPath>
-          <itemPath>usb/src/usb_host_msd.c</itemPath>
-          <itemPath>usb/src/usb_host_msd_scsi.c</itemPath>
-          <itemPath>usb/src/usb_host_printer.c</itemPath>
-          <itemPath>usb/src/usb_host_printer_esc_pos.c</itemPath>
-          <itemPath>usb/src/usb_host_printer_pcl_5.c</itemPath>
-          <itemPath>usb/src/usb_host_printer_postscript.c</itemPath>
-          <itemPath>usb/src/usb_host_printer_primitives.c</itemPath>
         </logicalFolder>
       </logicalFolder>
       <itemPath>main.c</itemPath>
@@ -99,7 +68,7 @@
       <HI-TECH-COMP>
         <property key="asmlist" value="true"/>
         <property key="define-macros" value=""/>
-        <property key="extra-include-directories" value="usb\inc"/>
+        <property key="extra-include-directories" value=".;usb\inc"/>
         <property key="identifier-length" value="255"/>
         <property key="operation-mode" value="free"/>
         <property key="opt-xc8-compiler-strict_ansi" value="false"/>
