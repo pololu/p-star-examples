@@ -1,6 +1,5 @@
 build
 debug
 dist
-nbproject/*
-!nbproject/*.xml
-private
+/*/nbproject/*
+!/*/nbproject/*.xml
