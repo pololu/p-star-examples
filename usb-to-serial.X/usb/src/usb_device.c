@@ -1494,7 +1494,7 @@ void USBCtrlEPAllowDataStage(void)
     {
         //Prepare EP0 OUT to receive the first OUT data packet in the data stage sequence.
         pBDTEntryEP0OutNext->CNT = USB_EP0_BUFF_SIZE;
-        pBDTEntryEP0OutNext->ADR = ConvertToPhysicalAddress(&CtrlTrfData);
+        pBDTEntryEP0OutNext->ADR = ConvertToPhysicalAddress(CtrlTrfData);
         pBDTEntryEP0OutNext->STAT.Val = _DAT1|(_DTSEN & _DTS_CHECKING_ENABLED);
         pBDTEntryEP0OutNext->STAT.Val |= _USIE;
     }   
@@ -1511,7 +1511,7 @@ void USBCtrlEPAllowDataStage(void)
 
 	    //Cnt should have been initialized by responsible request owner (ex: by
 	    //using the USBEP0SendRAMPtr() or USBEP0SendROMPtr() API function).
-		pBDTEntryIn[0]->ADR = ConvertToPhysicalAddress(&CtrlTrfData);
+		pBDTEntryIn[0]->ADR = ConvertToPhysicalAddress(CtrlTrfData);
 		pBDTEntryIn[0]->STAT.Val = _DAT1|(_DTSEN & _DTS_CHECKING_ENABLED);
         pBDTEntryIn[0]->STAT.Val |= _USIE;
     }     
@@ -1881,7 +1881,7 @@ static void USBCtrlTrfRxService(void)
     if(outPipes[0].wCount.Val > 0)
     {
         pBDTEntryEP0OutNext->CNT = USB_EP0_BUFF_SIZE;
-        pBDTEntryEP0OutNext->ADR = ConvertToPhysicalAddress(&CtrlTrfData);
+        pBDTEntryEP0OutNext->ADR = ConvertToPhysicalAddress(CtrlTrfData);
         if(pBDTEntryEP0OutCurrent->STAT.DTS == 0)
         {
             pBDTEntryEP0OutNext->STAT.Val = _DAT1|(_DTSEN & _DTS_CHECKING_ENABLED);
@@ -1991,7 +1991,7 @@ static void USBStdSetCfgHandler(void)
 	}
 
     //clear the alternate interface settings
-    memset((void*)&USBAlternateInterface,0x00,USB_MAX_NUM_INT);
+    memset(USBAlternateInterface,0x00,USB_MAX_NUM_INT);
 
     //Stop trying to reset ping pong buffer pointers
     USBPingPongBufferReset = 0;
@@ -2177,7 +2177,7 @@ static void USBStdGetStatusHandler(void)
 
     if(inPipes[0].info.bits.busy == 1)
     {
-        inPipes[0].pSrc.bRam = (uint8_t*)&CtrlTrfData;        // Set Source
+        inPipes[0].pSrc.bRam = (uint8_t*)CtrlTrfData;        // Set Source
         inPipes[0].info.bits.ctrl_trf_mem = USB_EP0_RAM;      // Set memory type
         inPipes[0].wCount.v[0] = 2;                           // Set data count
     }//end if(...)
