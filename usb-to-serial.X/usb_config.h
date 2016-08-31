@@ -7,7 +7,7 @@
 #define USB_EP0_BUFF_SIZE             64
 #define USB_MAX_NUM_INT               2
 #define USB_MAX_EP_NUMBER             2
-#define USB_NUM_STRING_DESCRIPTORS    3
+#define USB_NUM_STRING_DESCRIPTORS    4
 
 #define USB_USE_CDC
 #define CDC_COMM_INTF_ID              0
