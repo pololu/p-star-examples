@@ -54,10 +54,9 @@ please contact mla_licensing@microchip.com
 #ifndef FIXED_ADDRESS_MEMORY
     #define IN_DATA_BUFFER_ADDRESS_TAG
     #define OUT_DATA_BUFFER_ADDRESS_TAG
-    #define CONTROL_BUFFER_ADDRESS_TAG
 #endif
 
-#if !defined(IN_DATA_BUFFER_ADDRESS_TAG) || !defined(OUT_DATA_BUFFER_ADDRESS_TAG) || !defined(CONTROL_BUFFER_ADDRESS_TAG)
+#if !defined(IN_DATA_BUFFER_ADDRESS_TAG) || !defined(OUT_DATA_BUFFER_ADDRESS_TAG)
     #error "One of the fixed memory address definitions is not defined.  Please define the required address tags for the required buffers."
 #endif
 
@@ -70,8 +69,6 @@ typedef union
     LINE_CODING lineCoding;
     CDC_NOTICE cdcNotice;
 } CONTROL_BUFFER;
-
-//static CONTROL_BUFFER controlBuffer CONTROL_BUFFER_ADDRESS_TAG;
 
 LINE_CODING line_coding;    // Buffer to store line coding information
 CDC_NOTICE cdc_notice;
@@ -168,14 +165,14 @@ void USBCheckCDCRequest(void)
         //****** These commands are required ******//
         case SEND_ENCAPSULATED_COMMAND:
          //send the packet
-            inPipes[0].pSrc.bRam = (uint8_t*)&dummy_encapsulated_cmd_response;
+            inPipes[0].pSrc.bRam = (uint8_t*)dummy_encapsulated_cmd_response;
             inPipes[0].wCount.Val = dummy_length;
             inPipes[0].info.bits.ctrl_trf_mem = USB_EP0_RAM;
             inPipes[0].info.bits.busy = 1;
             break;
         case GET_ENCAPSULATED_RESPONSE:
             // Populate dummy_encapsulated_cmd_response first.
-            inPipes[0].pSrc.bRam = (uint8_t*)&dummy_encapsulated_cmd_response;
+            inPipes[0].pSrc.bRam = (uint8_t*)dummy_encapsulated_cmd_response;
             inPipes[0].info.bits.busy = 1;
             break;
         //****** End of required commands ******//
@@ -315,7 +312,7 @@ void CDCInitEP(void)
     USBEnableEndpoint(CDC_COMM_EP,USB_IN_ENABLED|USB_HANDSHAKE_ENABLED|USB_DISALLOW_SETUP);
     USBEnableEndpoint(CDC_DATA_EP,USB_IN_ENABLED|USB_OUT_ENABLED|USB_HANDSHAKE_ENABLED|USB_DISALLOW_SETUP);
 
-    CDCDataOutHandle = USBRxOnePacket(CDC_DATA_EP,(uint8_t*)&cdc_data_rx,sizeof(cdc_data_rx));
+    CDCDataOutHandle = USBRxOnePacket(CDC_DATA_EP,(uint8_t*)cdc_data_rx,sizeof(cdc_data_rx));
     CDCDataInHandle = NULL;
 
     #if defined(USB_CDC_SUPPORT_DSR_REPORTING)
@@ -428,7 +425,7 @@ bool USBCDCEventHandler(USB_EVENT event, void *pdata, uint16_t size)
         case EVENT_TRANSFER_TERMINATED:
             if(pdata == CDCDataOutHandle)
             {
-                CDCDataOutHandle = USBRxOnePacket(CDC_DATA_EP,(uint8_t*)&cdc_data_rx,sizeof(cdc_data_rx));
+                CDCDataOutHandle = USBRxOnePacket(CDC_DATA_EP,(uint8_t*)cdc_data_rx,sizeof(cdc_data_rx));
             }
             if(pdata == CDCDataInHandle)
             {
@@ -505,7 +502,7 @@ uint8_t getsUSBUSART(uint8_t *buffer, uint8_t len)
          * Prepare dual-ram buffer for next OUT transaction
          */
 
-        CDCDataOutHandle = USBRxOnePacket(CDC_DATA_EP,(uint8_t*)&cdc_data_rx,sizeof(cdc_data_rx));
+        CDCDataOutHandle = USBRxOnePacket(CDC_DATA_EP,(uint8_t*)cdc_data_rx,sizeof(cdc_data_rx));
 
     }//end if
     
@@ -889,7 +886,7 @@ void CDCTxService(void)
          */
     	cdc_tx_len = cdc_tx_len - byte_to_send;
     	  
-        pCDCDst.bRam = (uint8_t*)&cdc_data_tx; // Set destination pointer
+        pCDCDst.bRam = (uint8_t*)cdc_data_tx; // Set destination pointer
         
         i = byte_to_send;
         if(cdc_mem_type == USB_EP0_ROM)            // Determine type of memory source
@@ -924,7 +921,7 @@ void CDCTxService(void)
             else
                 cdc_trf_state = CDC_TX_COMPLETING;
         }//end if(cdc_tx_len...)
-        CDCDataInHandle = USBTxOnePacket(CDC_DATA_EP,(uint8_t*)&cdc_data_tx,byte_to_send);
+        CDCDataInHandle = USBTxOnePacket(CDC_DATA_EP,(uint8_t*)cdc_data_tx,byte_to_send);
 
     }//end if(cdc_tx_sate == CDC_TX_BUSY)
     
