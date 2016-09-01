@@ -85,3 +85,9 @@ bool USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, uint16_t size
     }
     return true;
 }
+
+void cdcSetLineCodingHandler()
+{
+    // Store the new line coding from the USB host.
+    line_coding = cdc_notice.SetLineCoding;
+}

@@ -98,7 +98,7 @@ please contact mla_licensing@microchip.com
 
 #if defined(USB_CDC_SET_LINE_CODING_HANDLER) 
     #define LINE_CODING_TARGET &cdc_notice.SetLineCoding._byte[0]
-    #define LINE_CODING_PFUNC &USB_CDC_SET_LINE_CODING_HANDLER
+    #define LINE_CODING_PFUNC USB_CDC_SET_LINE_CODING_HANDLER
 #else
     #define LINE_CODING_TARGET &line_coding._byte[0]
     #define LINE_CODING_PFUNC NULL
