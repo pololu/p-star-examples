@@ -21,30 +21,28 @@ please contact mla_licensing@microchip.com
 #include "usb_device_cdc.h"
 
 // Device Descriptor
-const USB_DEVICE_DESCRIPTOR device_dsc =
-{
-    0x12,                   // Size of this descriptor in bytes
-    USB_DESCRIPTOR_DEVICE,  // DEVICE descriptor type
+const USB_DEVICE_DESCRIPTOR device_dsc = {
+    sizeof(USB_DEVICE_DESCRIPTOR),
+    USB_DESCRIPTOR_DEVICE,
     0x0200,                 // USB Spec Release Number in BCD format
     CDC_DEVICE,             // Class Code
     0x00,                   // Subclass code
     0x00,                   // Protocol code
     USB_EP0_BUFF_SIZE,      // Max packet size for EP0, see usb_config.h
-    0x04D8,                 // Vendor ID
-    0x000A,                 // Product ID: CDC RS-232 Emulation Demo
+    0x1FFB,                 // Vendor ID: Pololu Corporation
+    0x2400,                 // Product ID: P-Star with one CDC ACM serial port
     0x0100,                 // Device release number in BCD format
-    0x01,                   // Manufacturer string index
-    0x02,                   // Product string index
-    0x03,                   // Device serial number string index
-    0x01                    // Number of possible configurations
+    1,                      // Manufacturer string index
+    2,                      // Product string index
+    3,                      // Device serial number string index
+    1                       // Number of possible configurations
 };
 
-const uint8_t configDescriptor1[67] =
-{
+const uint8_t configDescriptor1[67] = {
     // Configuration descriptor
     sizeof(USB_CONFIGURATION_DESCRIPTOR),
     USB_DESCRIPTOR_CONFIGURATION,
-    sizeof(configDescriptor1),0,
+    sizeof(configDescriptor1), 0,
     2,                      // Number of interfaces in this cfg
     1,                      // Index value of this configuration
     0,                      // Configuration string index
@@ -66,7 +64,7 @@ const uint8_t configDescriptor1[67] =
     sizeof(USB_CDC_HEADER_FN_DSC),
     CS_INTERFACE,
     DSC_FN_HEADER,
-    0x10,0x01,
+    0x10, 0x01,
 
     sizeof(USB_CDC_ACM_FN_DSC),
     CS_INTERFACE,
@@ -90,14 +88,13 @@ const uint8_t configDescriptor1[67] =
     USB_DESCRIPTOR_ENDPOINT,
     CDC_COMM_EP | _EP_IN,       // EndpointAddress
     _INTERRUPT,                 // Attributes
-    0x08,0x00,                  // Endpoint size
+    0x08, 0x00,                 // Endpoint size
     0x02,                       // Interval
 
     // CDC Data Interface Descriptor
     sizeof(USB_INTERFACE_DESCRIPTOR),
-    // Size of this descriptor in bytes
-    USB_DESCRIPTOR_INTERFACE,   // INTERFACE descriptor type
-    1,                      // Interface Number
+    USB_DESCRIPTOR_INTERFACE,
+    CDC_DATA_INTF_ID,       // Interface Number
     0,                      // Alternate Setting Number
     2,                      // Number of endpoints in this intf
     DATA_INTF,              // Class code
@@ -110,7 +107,7 @@ const uint8_t configDescriptor1[67] =
     USB_DESCRIPTOR_ENDPOINT,    // Endpoint Descriptor
     CDC_DATA_EP | _EP_OUT,      // EndpointAddress
     _BULK,                      // Attributes
-    0x40,0x00,                  // Packet size
+    CDC_DATA_IN_EP_SIZE, 0x00,  // Packet size
     0x00,                       // Interval
 
     // CDC Data IN Endpoint Descriptor
@@ -123,33 +120,30 @@ const uint8_t configDescriptor1[67] =
 };
 
 // Language code string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[1];}sd000={
-sizeof(sd000),USB_DESCRIPTOR_STRING,{0x0409}};
-
-// Manufacturer string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];}sd001={
-sizeof(sd001),USB_DESCRIPTOR_STRING,
-{'M','i','c','r','o','c','h','i','p',' ',
-'T','e','c','h','n','o','l','o','g','y',' ','I','n','c','.'
-}};
-
-// Product string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];}sd002={
-sizeof(sd002),USB_DESCRIPTOR_STRING,
-{'C','D','C',' ','R','S','-','2','3','2',' ',
-'E','m','u','l','a','t','i','o','n',' ','D','e','m','o'}
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[1];} sdLang = {
+  sizeof(sdLang), USB_DESCRIPTOR_STRING, {0x0409}
 };
 
-const uint8_t * const USB_CD_Ptr[]=
-{
+// Manufacturer string descriptor
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];} sdMfg = {
+  sizeof(sdMfg), USB_DESCRIPTOR_STRING,
+  {'P','o','l','o','l','u',' ','C','o','r','p','o','r','a','t','i','o','n'}
+};
+
+// Product string descriptor
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];} sdProd = {
+  sizeof(sdProd), USB_DESCRIPTOR_STRING,
+  {'P','-','S','t','a','r'}
+};
+
+const uint8_t * const USB_CD_Ptr[] = {
     configDescriptor1
 };
 
 // Array of string descriptors
-const uint8_t * const USB_SD_Ptr[USB_NUM_STRING_DESCRIPTORS]=
-{
-    (const uint8_t * const)&sd000,
-    (const uint8_t * const)&sd001,
-    (const uint8_t * const)&sd002,
-    (const uint8_t * const)0x80,   // Serial number from the P-Star bootloader
+const uint8_t * const USB_SD_Ptr[USB_NUM_STRING_DESCRIPTORS] = {
+    (const uint8_t *)&sdLang,
+    (const uint8_t *)&sdMfg,
+    (const uint8_t *)&sdProd,
+    (const uint8_t *)0x80,   // Serial number from the P-Star bootloader
 };
