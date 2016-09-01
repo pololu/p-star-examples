@@ -88,7 +88,7 @@ const uint8_t configDescriptor1[67] = {
     USB_DESCRIPTOR_ENDPOINT,
     CDC_COMM_EP | _EP_IN,       // EndpointAddress
     _INTERRUPT,                 // Attributes
-    0x08, 0x00,                 // Endpoint size
+    CDC_COMM_IN_EP_SIZE, 0x00,  // Endpoint size
     0x02,                       // Interval
 
     // CDC Data Interface Descriptor
