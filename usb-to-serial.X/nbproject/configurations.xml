@@ -4,7 +4,18 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="USB Framework" projectFiles="true">
+        <itemPath>usb/inc/usb.h</itemPath>
+        <itemPath>usb/inc/usb_ch9.h</itemPath>
+        <itemPath>usb/inc/usb_common.h</itemPath>
+        <itemPath>usb/inc/usb_device.h</itemPath>
+        <itemPath>usb/inc/usb_device_cdc.h</itemPath>
+        <itemPath>usb/inc/usb_hal.h</itemPath>
+        <itemPath>usb/inc/usb_hal_pic18.h</itemPath>
+      </logicalFolder>
       <itemPath>system.h</itemPath>
+      <itemPath>usb_helpers.h</itemPath>
+      <itemPath>usb_config.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -13,15 +24,13 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <logicalFolder name="usb" displayName="usb" projectFiles="true">
-        <logicalFolder name="src" displayName="src" projectFiles="true">
-          <itemPath>usb/src/usb_device.c</itemPath>
-          <itemPath>usb/src/usb_device_cdc.c</itemPath>
-        </logicalFolder>
+      <logicalFolder name="usb" displayName="USB Framework" projectFiles="true">
+        <itemPath>usb/src/usb_device.c</itemPath>
+        <itemPath>usb/src/usb_device_cdc.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
-      <itemPath>usb_config.h</itemPath>
       <itemPath>usb_descriptors.c</itemPath>
+      <itemPath>usb_helpers.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
