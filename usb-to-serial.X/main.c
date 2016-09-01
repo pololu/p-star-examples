@@ -1,3 +1,5 @@
+// TODO: call USBDeviceAttach and USBDeviceDetach
+
 #include "usb.h"
 #include "usb_device.h"
 #include "usb_device_cdc.h"
@@ -11,7 +13,7 @@ void interrupt low_priority lowIsr(void)
     USBDeviceTasks();
 }
 
-void LineCodingInit()
+void lineCodingInit()
 {
     line_coding.bCharFormat = 0;
     line_coding.bDataBits = 8;
@@ -19,7 +21,7 @@ void LineCodingInit()
     line_coding.dwDTERate = 9600;
 }
 
-void LoopbackService()
+void loopbackService()
 {
     if (USBGetDeviceState() < CONFIGURED_STATE) { return; }
 
@@ -57,8 +59,6 @@ void LoopbackService()
             putUSBUSART(writeBuffer, numBytesRead);
         }
     }
-
-    CDCTxService();
 }
 
 bool USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, uint16_t size)
@@ -106,10 +106,11 @@ void main(void)
 {
     USBDeviceInit();
     USBDeviceAttach();
-    LineCodingInit();
+    lineCodingInit();
 
     while (1)
     {
-        LoopbackService();
+        loopbackService();
+        CDCTxService();
     }
 }
