@@ -3,6 +3,7 @@
 #include "usb_device.h"
 #include "usb_device_cdc.h"
 #include "usb_helpers.h"
+#include "uart.h"
 
 static void lineCodingInit()
 {
@@ -19,7 +20,7 @@ static void usbPowerSenseInit()
     ANSELAbits.ANSA0 = 0;
 }
 
-bool usbPowerPresent()
+bit usbPowerPresent()
 {
     return PORTAbits.RA0;
 }
@@ -90,4 +91,6 @@ void cdcSetLineCodingHandler()
 {
     // Store the new line coding from the USB host.
     line_coding = cdc_notice.SetLineCoding;
+
+    cdcSetBaudRateHandler();
 }

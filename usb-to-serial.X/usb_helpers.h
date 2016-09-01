@@ -3,6 +3,9 @@
 
 void appUsbInit();
 void appUsbService();
-bool usbPowerPresent();
+bit usbPowerPresent();
+
+// This is called from usb_helpers.c but not defined there.
+void cdcSetBaudRateHandler();
 
 #endif

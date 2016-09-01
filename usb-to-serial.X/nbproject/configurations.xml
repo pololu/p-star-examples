@@ -16,6 +16,7 @@
       <itemPath>system.h</itemPath>
       <itemPath>usb_helpers.h</itemPath>
       <itemPath>usb_config.h</itemPath>
+      <itemPath>uart.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -31,6 +32,7 @@
       <itemPath>main.c</itemPath>
       <itemPath>usb_descriptors.c</itemPath>
       <itemPath>usb_helpers.c</itemPath>
+      <itemPath>uart.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -78,7 +80,7 @@
       </makeCustomizationType>
       <HI-TECH-COMP>
         <property key="asmlist" value="true"/>
-        <property key="define-macros" value=""/>
+        <property key="define-macros" value="_XTAL_FREQ=48000000"/>
         <property key="extra-include-directories" value=".;usb\inc"/>
         <property key="identifier-length" value="255"/>
         <property key="operation-mode" value="free"/>
