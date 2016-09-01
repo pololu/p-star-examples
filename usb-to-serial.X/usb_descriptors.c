@@ -125,13 +125,13 @@ const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[1];} sdLang = {
 };
 
 // Manufacturer string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];} sdMfg = {
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[18];} sdMfg = {
   sizeof(sdMfg), USB_DESCRIPTOR_STRING,
   {'P','o','l','o','l','u',' ','C','o','r','p','o','r','a','t','i','o','n'}
 };
 
 // Product string descriptor
-const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[25];} sdProd = {
+const struct{uint8_t bLength;uint8_t bDscType;uint16_t string[6];} sdProd = {
   sizeof(sdProd), USB_DESCRIPTOR_STRING,
   {'P','-','S','t','a','r'}
 };
