@@ -104,7 +104,7 @@ const uint8_t configDescriptor1[67] = {
 
     // CDC Data OUT Endpoint Descriptor
     sizeof(USB_ENDPOINT_DESCRIPTOR),
-    USB_DESCRIPTOR_ENDPOINT,    // Endpoint Descriptor
+    USB_DESCRIPTOR_ENDPOINT,
     CDC_DATA_EP | _EP_OUT,      // EndpointAddress
     _BULK,                      // Attributes
     CDC_DATA_IN_EP_SIZE, 0x00,  // Packet size
@@ -112,7 +112,7 @@ const uint8_t configDescriptor1[67] = {
 
     // CDC Data IN Endpoint Descriptor
     sizeof(USB_ENDPOINT_DESCRIPTOR),
-    USB_DESCRIPTOR_ENDPOINT,    // Endpoint Descriptor
+    USB_DESCRIPTOR_ENDPOINT,
     CDC_DATA_EP | _EP_IN,       // EndpointAddress
     _BULK,                      // Attributes
     0x40,0x00,                  // Packet size
