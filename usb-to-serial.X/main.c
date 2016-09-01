@@ -8,11 +8,6 @@
 static uint8_t readBuffer[CDC_DATA_OUT_EP_SIZE];
 static uint8_t writeBuffer[CDC_DATA_IN_EP_SIZE];
 
-void interrupt low_priority lowIsr(void)
-{
-    USBDeviceTasks();
-}
-
 void lineCodingInit()
 {
     line_coding.bCharFormat = 0;
@@ -102,6 +97,15 @@ bool USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, uint16_t size
     return true;
 }
 
+void interrupt high_priority highIsr()
+{
+    USBDeviceTasks();
+}
+
+void interrupt low_priority lowIsr()
+{
+}
+
 void main(void)
 {
     USBDeviceInit();
@@ -114,3 +118,4 @@ void main(void)
         CDCTxService();
     }
 }
+
