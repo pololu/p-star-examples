@@ -12,15 +12,36 @@ static void lineCodingInit()
     line_coding.dwDTERate = 9600;
 }
 
+static void usbPowerSenseInit()
+{
+    // We use pin RA0 to detect whether USB power is present or not,
+    // so we need to enable its digital input buffer.
+    ANSELAbits.ANSA0 = 0;
+}
+
+bool usbPowerPresent()
+{
+    return PORTAbits.RA0;
+}
+
 void appUsbInit()
 {
+    usbPowerSenseInit();
     lineCodingInit();
     USBDeviceInit();
-    USBDeviceAttach();
 }
 
 void appUsbService()
 {
+    if (usbPowerPresent())
+    {
+        USBDeviceAttach();
+    }
+    else
+    {
+        USBDeviceDetach();
+    }
+
     CDCTxService();
 }
 

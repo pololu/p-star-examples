@@ -3,5 +3,6 @@
 
 void appUsbInit();
 void appUsbService();
+bool usbPowerPresent();
 
 #endif

@@ -26,7 +26,7 @@ void loopbackService()
         {
             switch (readBuffer[i])
             {
-            // If we receive new line or carriage return, just echo it back.
+            // If we receive a new line or carriage return, just echo it back.
             case '\n':
             case '\r':
                 writeBuffer[i] = readBuffer[i];
