@@ -17,16 +17,14 @@ void usbToSerialService()
 
     // When we receive bytes on the UART's RX line, send them on the
     // virtual serial port.
-    // TODO: probably have to make this be much more efficient
-    if (uartRxAvailable() && cdcTxAvailable())
+    while (uartRxAvailable() && cdcTxAvailable())
     {
         cdcTxSendByte(uartRxReceiveByte());
     }
 
     // When we receive bytes on the virtual USB serial port, send them on
     // the UART's TX line.
-    // TODO: fix this
-    if (cdcRxAvailable() && uartTxAvailable())
+    while (cdcRxAvailable() && uartTxAvailable())
     {
         uartTxSendByte(cdcRxReceiveByte());
     }
