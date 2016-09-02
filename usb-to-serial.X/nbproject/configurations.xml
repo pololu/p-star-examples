@@ -17,6 +17,8 @@
       <itemPath>usb_helpers.h</itemPath>
       <itemPath>usb_config.h</itemPath>
       <itemPath>uart.h</itemPath>
+      <itemPath>leds.h</itemPath>
+      <itemPath>time.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -33,6 +35,7 @@
       <itemPath>usb_descriptors.c</itemPath>
       <itemPath>usb_helpers.c</itemPath>
       <itemPath>uart.c</itemPath>
+      <itemPath>time.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
