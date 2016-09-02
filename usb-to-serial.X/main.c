@@ -9,9 +9,6 @@
 #include "usb_helpers.h"
 #include "uart.h"
 
-static uint8_t readBuffer[CDC_DATA_OUT_EP_SIZE];
-static uint8_t writeBuffer[CDC_DATA_IN_EP_SIZE];
-
 void usbToSerialService()
 {
     // If we have not reached the USB configured state yet, we should not
@@ -21,22 +18,17 @@ void usbToSerialService()
     // When we receive bytes on the UART's RX line, send them on the
     // virtual serial port.
     // TODO: probably have to make this be much more efficient
-    if (USBUSARTIsTxTrfReady() && uartRxAvailable())
+    if (uartRxAvailable() && cdcTxAvailable())
     {
-        writeBuffer[0] = uartRxReceiveByte();
-        putUSBUSART(writeBuffer, 1);
+        cdcTxSendByte(uartRxReceiveByte());
     }
 
     // When we receive bytes on the virtual USB serial port, send them on
     // the UART's TX line.
     // TODO: fix this
-    if (uartTxAvailable())
+    if (cdcRxAvailable() && uartTxAvailable())
     {
-        uint8_t byteCount = getsUSBUSART(readBuffer, sizeof(readBuffer));
-        if (byteCount)
-        {
-            uartTxSendByte(readBuffer[0]);
-        }
+        uartTxSendByte(cdcRxReceiveByte());
     }
 }
 

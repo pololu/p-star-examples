@@ -5,6 +5,12 @@
 #include "usb_helpers.h"
 #include "uart.h"
 
+static uint8_t cdcRxBufferLength = 0;
+static uint8_t cdcRxBufferIndex = 0;
+static uint8_t cdcTxBufferLength = 0;
+static uint8_t cdcRxBuffer[CDC_DATA_OUT_EP_SIZE];
+static uint8_t cdcTxBuffer[CDC_DATA_IN_EP_SIZE];
+
 static void lineCodingInit()
 {
     line_coding.bCharFormat = 0;
@@ -43,7 +49,18 @@ void appUsbService()
         USBDeviceDetach();
     }
 
-    CDCTxService();
+    // If there is data in our buffer to be send to the computer on
+    // the virtual serial port, send it.
+    if (USBUSARTIsTxTrfReady() && cdcTxBufferLength)
+    {
+        putUSBUSART(cdcTxBuffer, cdcTxBufferLength);
+        cdcTxBufferLength = 0;
+    }
+
+    if (USBGetDeviceState() == CONFIGURED_STATE)
+    {
+        CDCTxService();
+    }
 }
 
 bool USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, uint16_t size)
@@ -64,6 +81,9 @@ bool USER_USB_CALLBACK_EVENT_HANDLER(USB_EVENT event, void *pdata, uint16_t size
 
     case EVENT_CONFIGURED:
         CDCInitEP();
+        cdcRxBufferLength = 0;
+        cdcRxBufferIndex = 0;
+        cdcTxBufferLength = 0;
         break;
 
     case EVENT_SET_DESCRIPTOR:
@@ -93,4 +113,38 @@ void cdcSetLineCodingHandler()
     line_coding = cdc_notice.SetLineCoding;
 
     cdcSetBaudRateHandler();
+}
+
+uint8_t cdcRxAvailable(void)
+{
+    if (cdcRxBufferIndex >= cdcRxBufferLength)
+    {
+        // We are done processing the data in cdcRxBuffer, so get more
+        // data if it is available.
+        cdcRxBufferLength = getsUSBUSART(cdcRxBuffer, sizeof(cdcRxBuffer));
+        cdcRxBufferIndex = 0;
+    }
+    return cdcRxBufferLength - cdcRxBufferIndex;
+}
+
+uint8_t cdcRxReceiveByte(void)
+{
+    return cdcRxBuffer[cdcRxBufferIndex++];
+}
+
+uint8_t cdcTxAvailable(void)
+{
+    if (!USBUSARTIsTxTrfReady())
+    {
+        // The CDC stack is busy sending data, probably from our cdcTxBuffer,
+        // so we cannot accept any more data right now.
+        return 0;
+    }
+
+    return sizeof(cdcTxBuffer) - cdcTxBufferLength;
+}
+
+void cdcTxSendByte(uint8_t data)
+{
+    cdcTxBuffer[cdcTxBufferLength++] = data;
 }
