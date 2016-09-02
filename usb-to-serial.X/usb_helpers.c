@@ -117,6 +117,13 @@ void cdcSetLineCodingHandler()
 
 uint8_t cdcRxAvailable(void)
 {
+    if (USBGetDeviceState() != CONFIGURED_STATE)
+    {
+        // We are not in the USB Configured state, so we should not
+        // be using the USB virtual serial port.
+        return 0;
+    }
+
     if (cdcRxBufferIndex >= cdcRxBufferLength)
     {
         // We are done processing the data in cdcRxBuffer, so get more
@@ -124,6 +131,7 @@ uint8_t cdcRxAvailable(void)
         cdcRxBufferLength = getsUSBUSART(cdcRxBuffer, sizeof(cdcRxBuffer));
         cdcRxBufferIndex = 0;
     }
+
     return cdcRxBufferLength - cdcRxBufferIndex;
 }
 
@@ -134,6 +142,13 @@ uint8_t cdcRxReceiveByte(void)
 
 uint8_t cdcTxAvailable(void)
 {
+    if (USBGetDeviceState() != CONFIGURED_STATE)
+    {
+        // We are not in the USB Configured state, so we should not
+        // be using the USB virtual serial port.
+        return 0;
+    }
+
     if (!USBUSARTIsTxTrfReady())
     {
         // The CDC stack is busy sending data, probably from our cdcTxBuffer,

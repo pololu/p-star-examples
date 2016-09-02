@@ -11,10 +11,6 @@
 
 void usbToSerialService()
 {
-    // If we have not reached the USB configured state yet, we should not
-    // be using the USB virtual serial port.
-    if (USBGetDeviceState() < CONFIGURED_STATE) { return; }
-
     // When we receive bytes on the UART's RX line, send them on the
     // virtual serial port.
     while (uartRxAvailable() && cdcTxAvailable())
