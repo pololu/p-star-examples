@@ -1,5 +1,12 @@
 // This file defines the interface for time.c, which provides some simple
 // timing functions for the PIC18F25K50 using Timer0.
+//
+// These functions assume that the PIC is running at 48 MHz, so _XTAL_FREQ
+// would be 48000000.
+
+#if _XTAL_FREQ != 48000000
+#error These functions assume that the PIC is running at 48 MHz.
+#endif
 
 #include <stdint.h>
 
