@@ -77,6 +77,12 @@ void main(void)
     uartInit();
     appUsbInit();
 
+    // Enable interrupts with both high and low priority.
+    // (However, this example only uses high priority interrupts.)
+    IPEN = 1;
+    GIEL = 1;
+    GIEH = 1;
+
     while (1)
     {
         timeService();
