@@ -17,6 +17,16 @@ To request to license the code under the MLA license (www.microchip.com/mla_lice
 please contact mla_licensing@microchip.com
 *******************************************************************************/
 
+// This file contains the USB descriptors of the device.  The descriptors are
+// read by the USB host when the device is plugged in.  They identify "Pololu
+// Corporation" as the manufacturer, "P-Star" as the product name, and tell
+// the USB host that this device has a single CDC ACM virtual serial port.
+// They also contain the serial number from the P-Star's bootloader.
+//
+// If you make any major changes to these descriptors or if you run this code
+// on a board that is not the P-Star, please be sure to change this file to
+// use your own the vendor ID, product ID, and string descriptors.
+
 #include "usb.h"
 #include "usb_device_cdc.h"
 
