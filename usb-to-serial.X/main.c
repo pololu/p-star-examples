@@ -1,6 +1,3 @@
-// TODO: use LEDs for something
-// TODO: CDC ACM control signals on GPIO pins
-
 #include <xc.h>
 #include <stdint.h>
 #include <usb.h>
