@@ -1,3 +1,5 @@
+// Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
+
 // This file provides some functions that help you use the Microchip USB Stack
 // on the P-Star.  For more information, see usb_helpers.h.
 

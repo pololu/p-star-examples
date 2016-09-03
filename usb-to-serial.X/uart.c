@@ -1,3 +1,5 @@
+// Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
+
 // Abstraction layer for the UART.
 //
 // Note: The PIC18F25K50 does not have an internal pull-up resistor for RX

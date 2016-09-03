@@ -1,3 +1,5 @@
+// Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
+
 // This file provides macros for using LEDs on the P-Star.
 
 #ifndef _LEDS_H

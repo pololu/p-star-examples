@@ -1,3 +1,5 @@
+// Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
+
 // These functions provide a simple way to send and receive asynchronous serial
 // bytes on the EUSART (UART) on the PIC18F25K50.
 //

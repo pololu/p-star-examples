@@ -1,3 +1,5 @@
+// Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
+
 // This file defines the interface for time.c, which provides some simple
 // timing functions for the PIC18F25K50 using Timer0.
 //

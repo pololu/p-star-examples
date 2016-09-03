@@ -1,3 +1,5 @@
+// Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
+
 /*******************************************************************************
 Copyright 2016 Microchip Technology Inc. (www.microchip.com)
 
