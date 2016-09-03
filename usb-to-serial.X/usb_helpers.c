@@ -1,3 +1,6 @@
+// This file provides some functions that help you use the Microchip USB Stack
+// on the P-Star.  For more information, see usb_helpers.h.
+
 #include <xc.h>
 #include "usb.h"
 #include "usb_device.h"
@@ -49,17 +52,17 @@ void appUsbService()
         USBDeviceDetach();
     }
 
-    // If there is data in our buffer to be send to the computer on
-    // the virtual serial port, send it.
-    if (USBUSARTIsTxTrfReady() && cdcTxBufferLength)
-    {
-        putUSBUSART(cdcTxBuffer, cdcTxBufferLength);
-        cdcTxBufferLength = 0;
-    }
-
     if (USBGetDeviceState() == CONFIGURED_STATE)
     {
         CDCTxService();
+
+        // If there is data in our buffer to be send to the computer on
+        // the virtual serial port, send it.
+        if (USBUSARTIsTxTrfReady() && cdcTxBufferLength)
+        {
+            putUSBUSART(cdcTxBuffer, cdcTxBufferLength);
+            cdcTxBufferLength = 0;
+        }
     }
 }
 
