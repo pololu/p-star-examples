@@ -16,8 +16,9 @@ bit usbPowerPresent(void);
 // USB virtual serial port.
 uint8_t cdcRxAvailable(void);
 
-// Reads one byte form the USB virtual serial port.  You must call
-// cdcRxAvailable to make sure bytes are available first.
+// Reads one byte from the USB virtual serial port.  You MUST call
+// cdcRxAvailable to make sure bytes are available first, or else this
+// function could return invalid data.
 uint8_t cdcRxReceiveByte();
 
 // Returns the amount of free buffer space available for sending data to
