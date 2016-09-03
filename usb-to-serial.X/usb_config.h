@@ -1,3 +1,7 @@
+// The definitions in this file are used by the Microchip USB Stack.
+// For more information, see the Microchip Libraries for Applications, which
+// can be downloaded from Microchip's website.
+
 #define USB_SUPPORT_DEVICE
 #define USB_INTERRUPT
 #define USB_SPEED_OPTION              USB_FULL_SPEED
