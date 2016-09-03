@@ -55,8 +55,6 @@ void uartSetBaudRate(uint24_t baud)
         return;
     }
 
-    // With _XTAL_FREQ of 4800000 and baud rates between 300 and 115200,
-    // the maximum error here is 0.48%.
     SPBRG16 = ((((uint24_t)(_XTAL_FREQ / 4)) - (baud >> 1))) / baud;
 }
 
