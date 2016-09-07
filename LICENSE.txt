@@ -1,6 +1,6 @@
-Several files in this repository are copyrighted by Microchip.
-For information about licensing terms for those files, see the
-license at the top of each file.
+Several files in this repository are copyrighted by Technology
+Inc. (www.microchip.com).  For information about licensing terms
+for those files, see the license at the top of each file.
 
 For the files that are copyrighted by Pololu Corporation, the
 license below applies:
