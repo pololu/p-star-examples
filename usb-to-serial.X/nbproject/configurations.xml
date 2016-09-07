@@ -13,8 +13,8 @@
         <itemPath>usb_device_local.h</itemPath>
         <itemPath>usb_hal.h</itemPath>
         <itemPath>usb_hal_pic18.h</itemPath>
-        <itemPath>system.h</itemPath>
       </logicalFolder>
+      <itemPath>system.h</itemPath>
       <itemPath>usb_helpers.h</itemPath>
       <itemPath>usb_config.h</itemPath>
       <itemPath>uart.h</itemPath>

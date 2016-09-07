@@ -6,6 +6,8 @@
 // These functions assume that the PIC is running at 48 MHz, so _XTAL_FREQ
 // would be 48000000.
 
+#include "system.h"
+
 #if _XTAL_FREQ != 48000000
 #error These functions assume that the PIC is running at 48 MHz.
 #endif

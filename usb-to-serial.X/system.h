@@ -1,2 +1,6 @@
-// This file is just here because some files in the
-// Microchip USB stack include it.
+#ifndef _SYSTEM_H
+#define _SYSTEM_H
+
+#define _XTAL_FREQ 48000000
+
+#endif

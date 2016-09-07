@@ -5,6 +5,7 @@
 // Note: The PIC18F25K50 does not have an internal pull-up resistor for RX
 // (RC7), so you should add an external one.
 
+#include "system.h"
 #include "uart.h"
 #include <xc.h>
 
