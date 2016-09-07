@@ -10,6 +10,7 @@
         <itemPath>usb_common.h</itemPath>
         <itemPath>usb_device.h</itemPath>
         <itemPath>usb_device_cdc.h</itemPath>
+        <itemPath>usb_device_local.h</itemPath>
         <itemPath>usb_hal.h</itemPath>
         <itemPath>usb_hal_pic18.h</itemPath>
         <itemPath>system.h</itemPath>
