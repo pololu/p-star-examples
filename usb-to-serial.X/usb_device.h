@@ -2049,6 +2049,6 @@ extern USB_VOLATILE uint8_t USBTicksSinceSuspendEnd;
 /******************************************************************************/
 /* DOM-IGNORE-END */
 
-#include <usb_hal.h>
+#include "usb_hal.h"
 
 #endif //USB_DEVICE_H
