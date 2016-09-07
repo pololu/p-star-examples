@@ -84,7 +84,7 @@
       </makeCustomizationType>
       <HI-TECH-COMP>
         <property key="asmlist" value="true"/>
-        <property key="define-macros" value="_XTAL_FREQ=48000000"/>
+        <property key="define-macros" value=""/>
         <property key="extra-include-directories" value=""/>
         <property key="identifier-length" value="255"/>
         <property key="operation-mode" value="free"/>
@@ -104,7 +104,7 @@
         <property key="use-cci" value="false"/>
         <property key="use-iar" value="false"/>
         <property key="verbose" value="false"/>
-        <property key="warning-level" value="-3"/>
+        <property key="warning-level" value="-2"/>
         <property key="what-to-do" value="ignore"/>
       </HI-TECH-COMP>
       <HI-TECH-LINK>
@@ -146,7 +146,7 @@
         <property key="opt-xc8-linker-link_startup" value="false"/>
         <property key="opt-xc8-linker-serial" value=""/>
         <property key="program-the-device-with-default-config-words" value="true"/>
-        <appendMe value="--msgdisable=759:off,1498:off,520:off"/>
+        <appendMe value="--msgdisable=759:off,1311:off"/>
       </HI-TECH-LINK>
       <PICkit3PlatformTool>
         <property key="AutoSelectMemRanges" value="auto"/>
