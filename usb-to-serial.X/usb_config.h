@@ -1,3 +1,6 @@
+// This file sets the options needed for a single USB CDC ACM virtual serial
+// port.
+//
 // The definitions in this file are used by the Microchip USB Stack.
 // For more information, see the Microchip Libraries for Applications, which
 // can be downloaded from Microchip's website.
