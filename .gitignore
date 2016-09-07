@@ -3,3 +3,4 @@ debug
 dist
 /*/nbproject/*
 !/*/nbproject/*.xml
+*.zip
