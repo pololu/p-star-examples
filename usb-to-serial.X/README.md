@@ -106,8 +106,8 @@ applications:
 - usb_helpers.c, usb_helpers.h
 - usb_config.h
 
-The following files are from the USB stack in the Microchip Libraries for
-Applications (MLA) v2016_08_08:
+The following files are from the USB stack in the [Microchip Libraries for
+Applications (MLA)][mla] v2016_08_08:
 
 - usb.h
 - usb_ch9.h
