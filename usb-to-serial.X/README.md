@@ -88,7 +88,7 @@ It would also be possible to modify this example to make a customized
 USB-to-Serial adapter with application-specific behavior.
 
 
-## Source file structure
+## Source file organization
 
 The primary file for this example is main.c.  It contains all of the
 application-specific logic.
@@ -104,6 +104,7 @@ applications:
 - system.h
 - uart.c, uart.h
 - usb_helpers.c, usb_helpers.h
+- usb_config.h
 
 The following files are from the USB stack in the Microchip Libraries for
 Applications (MLA) v2016_08_08:
