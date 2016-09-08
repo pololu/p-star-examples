@@ -1,3 +1,9 @@
+// USB-to-serial adapter example for the P-Star 25K50
+//
+// For more information, see:
+//
+//   https://github.com/pololu/p-star-examples/usb-to-serial.X/
+
 #include <xc.h>
 #include <stdint.h>
 #include "usb.h"
