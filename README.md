@@ -12,6 +12,7 @@ Microchip that does not require any software installation, or the [MPLAB X
 IDE][x], a more powerful IDE that is installed on your computer.  If you are not
 sure which IDE to use, we recommed using the MPLAB XPress IDE.
 
+
 ## Compiling examples with the MPLAB XPress IDE
 
 These examples are available on the [MPLAB Xpress Code Examples][examples] page.
@@ -41,10 +42,6 @@ the "Programming using p-load" section of the [P-Star user's guide][guide].
 
 For more information about using the MPLAB XPress IDE, see Microchip's [main
 page for the MPLAB XPress IDE][xpressinfo].
-
-## Compiling examples with the MPLAB X IDE
-
-
 
 
 [pstar25m]: https://www.pololu.com/product/3150
