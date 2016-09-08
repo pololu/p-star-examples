@@ -17,18 +17,16 @@ sure which IDE to use, we recommed using the MPLAB XPress IDE.
 
 These examples are available on the [MPLAB Xpress Code Examples][examples] page.
 In the "Board" column of that page, select "P-Star 25K50" to display all the
-examples for the P-Star 25K50.  This list might include community-submitted
-examples as well as the examples from this page.  You can tell which examples
-were made by us by hovering over the icon in the "Author" column and making sure
-that it says "Pololu".  Click the "Open" button next to an example to open that
-example in the online IDE.
+examples for the P-Star 25K50.  (Some of those examples might be from other
+sources.)  Click the "Open" button next to an example to open that example in
+the online IDE.
 
 If you cannot find the example you are looking for on the Examples page, you
 might have to upload it to the online IDE yourself.  First, download this
-repository.  Open the ZIP file you have downloaded, and delete all files and
-folders except for the folder containing the example you want to run.  Next,
-start the MPLAB XPress IDE by opening [this link][xpressrun] in a new tab.  In
-the IDE's "File" menu, select "Import Project" and upload the ZIP file.
+repository as a ZIP files.  Extract the folder containing the example you want
+to run, and make a new ZIP file that just contains that folder.  Next, start the
+MPLAB XPress IDE by opening [this link][xpressrun] in a new tab.  In the IDE's
+"File" menu, select "Import Project" and upload the new ZIP file.
 
 Once you have succeeeded in opening the project in the MPLAB XPress IDE, you
 should see some source code on the right side of your browser window, and you
