@@ -1,4 +1,4 @@
-// USB-to-serial adapter example for the P-Star 25K50
+// USB-to-Serial Adapter Example for the P-Star 25K50
 //
 // For more information, see:
 //
