@@ -13,15 +13,15 @@ send and receive serial data.
 ## Installation instructions
 
 For Windows users, we recommend installing the driver "p-star-serial.inf".
-Download the [entire repository](../) to your computer, open the "drivers"
-folder, right-click on "p-star-serial.inf", and select "Install".  If you are
-using Windows 10 or later and choose not to install the drivers, the example
-will still be usable, but its virtual serial port will have a generic name in
-your Device Manager.
+Download this repository to your computer, open the "drivers" folder,
+right-click on "p-star-serial.inf", and select "Install".  If you are using
+Windows 10 or later and choose not to install the drivers, the example will
+still be usable, but its virtual serial port will have a generic name in your
+Device Manager.
 
 Linux and Mac OS X users do not need to install any drivers.
 
-See [the top-level README.md](../README.md) for information about building this
+See [the top-level README](../README.md) for information about building this
 example in the MPLAB XPress IDE or MPLAB X IDE and uploading it to the P-Star.
 
 
@@ -40,7 +40,7 @@ computer as a USB device that has one USB CDC ACM virtual serial port, using the
 Pololu Corporation vendor ID and a product ID of 0x2400.
 
 If you are using Windows, you should see an entry labeled "P-Star" in your
-Device Manage in the "Ports (COM & LPT)" section.  However, if you have Windows
+Device Manager in the "Ports (COM & LPT)" section.  However, if you have Windows
 10 or later and did not install our driver before running this example, the name
 you see might be "USB Serial Device" instead.
 
@@ -60,8 +60,8 @@ second.  If USB power is not detected, the green LED is off.
 
 The yellow LED will always be on while this example is running.
 
-The red LED is on the TX/RC6 line, so it blink when data is being sent on the TX
-line and be off otherwise.
+The red LED is connected to the TX/RC6 line, so it will blink when data is being
+sent on the TX line and be off otherwise.
 
 
 ## Caveats
