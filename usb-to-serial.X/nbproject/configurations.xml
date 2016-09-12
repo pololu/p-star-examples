@@ -126,7 +126,7 @@
         <property key="code-model-external" value="wordwrite"/>
         <property key="code-model-rom" value=""/>
         <property key="create-html-files" value="false"/>
-        <property key="data-model-ram" value="default,-400-5ff"/>
+        <property key="data-model-ram" value=""/>
         <property key="data-model-size-of-double" value="24"/>
         <property key="data-model-size-of-float" value="24"/>
         <property key="display-class-usage" value="false"/>
