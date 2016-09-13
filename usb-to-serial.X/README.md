@@ -22,7 +22,7 @@ Device Manager.
 Linux and Mac OS X users do not need to install any drivers.
 
 See [the top-level README](../README.md) for information about building this
-example in the MPLAB XPress IDE or MPLAB X IDE and uploading it to the P-Star.
+example and writing it to the P-Star.
 
 
 ## Pinout
@@ -35,9 +35,9 @@ example in the MPLAB XPress IDE or MPLAB X IDE and uploading it to the P-Star.
 
 ## Description
 
-After you write this example onto a P-Star 25K50, the P-Star will appear to the
+After you write this example to a P-Star 25K50, the P-Star will appear to the
 computer as a USB device that has one USB CDC ACM virtual serial port, using the
-Pololu Corporation vendor ID and a product ID of 0x2400.
+Pololu Corporation vendor ID.
 
 If you are using Windows, you should see an entry labeled "P-Star" in your
 Device Manager in the "Ports (COM & LPT)" section.  However, if you have Windows
