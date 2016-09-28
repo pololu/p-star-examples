@@ -1,9 +1,16 @@
+// WS2812B/SK6812 LED Strip Example for the P-Star 25K50
+//
+// For more information, see:
+//
+//   https://github.com/pololu/p-star-examples/led-strip-ws2812b.X/
+
 #include <xc.h>
 #include "time.h"
 #include "ws2812b.h"
 
+// Create a buffer for holding the colors (3 bytes per color).
 #define LED_COUNT 60
-rgb_color colors[60];
+rgb_color colors[LED_COUNT];
 
 // Converts a color from HSV to RGB.
 // h is hue, as a number between 0 and 360.
@@ -41,16 +48,6 @@ void updateLeds()
       uint8_t x = (time >> 2) - (i << 3);
       colors[i] = hsvToRgb((uint32_t)x * 359 / 256, 255, 255);
     }
-    
-    colors[0].red = 0xFF;
-    colors[0].green = 0;
-    colors[0].blue = 0;
-    colors[1].red = 0;
-    colors[1].green = 0xFF;
-    colors[1].blue = 0;
-    colors[2].red = 0;
-    colors[2].green = 0;
-    colors[2].blue = 0xFF;
 
     // Write the colors to the LED strip.
     ws2812b_write(colors, LED_COUNT);
