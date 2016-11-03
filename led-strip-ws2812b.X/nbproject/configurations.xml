@@ -20,7 +20,7 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Libraries" projectFiles="true">
         <itemPath>time.c</itemPath>
-        <itemPath>ws2812b_write.c</itemPath>
+        <itemPath>ws2812b.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
     </logicalFolder>
