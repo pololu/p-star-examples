@@ -28,7 +28,7 @@ void ws2812b_write(rgb_color * colors, uint16_t count)
     movff ws2812b_write@colors + 1, FSR0H
 
     movlb (ws2812b_write@count >> 8)
-            
+
     bra ws2812b_outer_loop_test
 
 ws2812b_send_byte:
@@ -50,7 +50,7 @@ ws2812b_send_bit:
     nop
     nop
     btfss WREG, 7
-    bcf WS2812B_DATA_LAT, WS2812B_DATA_BIT, c     
+    bcf WS2812B_DATA_LAT, WS2812B_DATA_BIT, c
     nop
     nop
     nop

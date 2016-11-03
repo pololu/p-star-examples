@@ -3,7 +3,7 @@
 ## Summary
 
 This example shows how you can program a [P-Star 25K50 Micro][pstar25m] to
-control an LED strip based on the [WS281x][wscat] or SK6812 LEDs.
+control an LED strip based on the [SK6812/WS281x addressable RGB LEDs][cat].
 
 This example disables interrupts and uses PIC18 assembly code to ensure that the
 signal sent to the LED strip has accurate timing.
@@ -36,7 +36,7 @@ A flowing rainbow pattern is displayed on the attached LED strip.
 ## Example uses
 
 This app can be expanded to show custom patterns on your LED strip.  You could
-add buttons or other controls to adjust the colors on the LED strip.
+add buttons or other controls to adjust the patterns on the LED strip.
 
 The code in this example shows how to use the P-Star to do precise I/O using
 bit-banging and assembly code.
@@ -57,4 +57,4 @@ applications:
 The file ws2812b_config.h defines what PIC pin to use for the LED strip.
 
 [pstar25m]: https://www.pololu.com/product/3150
-[wscat]: https://www.pololu.com/category/151/ws281x-based-addressable-rgb-leds
+[cat]: https://www.pololu.com/category/151
