@@ -33,8 +33,8 @@ static void apa102c_init()
 #define SET_DATA(b) (b) ? (APA102C_DATA_LAT |= (1 << APA102C_DATA_BIT)) \
                         : (APA102C_DATA_LAT &= ~(1 << APA102C_DATA_BIT));
 #define PULSE_CLOCK() { \
-        APA102C_CLOCK_LAT |= (1 << APA102C_DATA_BIT);           \
-        APA102C_CLOCK_LAT &= ~(1 << APA102C_DATA_BIT); }
+        APA102C_CLOCK_LAT |= (1 << APA102C_CLOCK_BIT); \
+        APA102C_CLOCK_LAT &= ~(1 << APA102C_CLOCK_BIT); }
 
 static void apa102c_transfer(uint8_t b)
 {

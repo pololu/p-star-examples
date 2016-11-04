@@ -7,10 +7,14 @@
 #include <xc.h>
 #include "time.h"
 #include "apa102c.h"
+#include "apa102c_config.h"
 
 // Create a buffer for holding the colors (3 bytes per color).
 #define LED_COUNT 60
 rgb_color colors[LED_COUNT];
+
+// Set the brightness to use (the maximum is 31).
+const uint8_t brightness = 1;
 
 // Converts a color from HSV to RGB.
 // h is hue, as a number between 0 and 360.
@@ -50,7 +54,7 @@ void updateLeds()
     }
 
     // Write the colors to the LED strip.
-    apa102c_write(colors, LED_COUNT);
+    apa102c_write(colors, LED_COUNT, brightness);
 }
 
 void main(void)
