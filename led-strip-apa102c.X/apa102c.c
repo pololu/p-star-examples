@@ -16,7 +16,8 @@ void apa102c_write(rgb_color * colors, uint16_t count, uint8_t brightness)
     apa102c_start_frame();
     for (uint16_t i = 0; i < count; i++)
     {
-        apa102c_send_color(colors[i].red, colors[i].green, colors[i].blue, brightness);
+        apa102c_send_color(colors->red, colors->green, colors->blue, brightness);
+        colors++;
     }
     apa102c_end_frame(count);
 }
@@ -38,14 +39,14 @@ static void apa102c_init()
 
 static void apa102c_transfer(uint8_t b)
 {
-    SET_DATA(b >> 7 & 1); PULSE_CLOCK();
-    SET_DATA(b >> 6 & 1); PULSE_CLOCK();
-    SET_DATA(b >> 5 & 1); PULSE_CLOCK();
-    SET_DATA(b >> 4 & 1); PULSE_CLOCK();
-    SET_DATA(b >> 3 & 1); PULSE_CLOCK();
-    SET_DATA(b >> 2 & 1); PULSE_CLOCK();
-    SET_DATA(b >> 1 & 1); PULSE_CLOCK();
-    SET_DATA(b >> 0 & 1); PULSE_CLOCK();
+    SET_DATA(b & (1 << 7)); PULSE_CLOCK();
+    SET_DATA(b & (1 << 6)); PULSE_CLOCK();
+    SET_DATA(b & (1 << 5)); PULSE_CLOCK();
+    SET_DATA(b & (1 << 4)); PULSE_CLOCK();
+    SET_DATA(b & (1 << 3)); PULSE_CLOCK();
+    SET_DATA(b & (1 << 2)); PULSE_CLOCK();
+    SET_DATA(b & (1 << 1)); PULSE_CLOCK();
+    SET_DATA(b & (1 << 0)); PULSE_CLOCK();
 }
 
 void apa102c_start_frame()
