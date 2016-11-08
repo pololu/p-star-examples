@@ -60,14 +60,11 @@ void apa102c_start_frame()
 
 void apa102c_end_frame(uint16_t count)
 {
-    for (uint16_t i = 0; i < (count + 14)/16; i++)
+    apa102c_transfer(0xFF);
+    for (uint16_t i = 0; i < 5 + count / 16; i++)
     {
         apa102c_transfer(0);
     }
-
-    /* We call init() here to make sure we leave the data line driving low
-     * even if count is 0. */
-    apa102c_init();
 }
 
 void apa102c_send_color(uint8_t red, uint8_t green, uint8_t blue, uint8_t brightness)
