@@ -1,0 +1,3 @@
+void i2cInit()
+{
+}

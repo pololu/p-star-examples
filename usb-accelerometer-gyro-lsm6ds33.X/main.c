@@ -12,6 +12,7 @@
 #include "usb_helpers.h"
 #include "leds.h"
 #include "time.h"
+#include "i2c.h"
 
 void cdcSetBaudRateHandler()
 {
@@ -59,6 +60,7 @@ void main(void)
     LEDS_INIT();
     timeInit();
     appUsbInit();
+    i2cInit();
 
     // Enable interrupts with both high and low priority.
     IPEN = 1;
