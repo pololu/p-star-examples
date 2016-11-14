@@ -10,32 +10,11 @@
 #include "usb_device.h"
 #include "usb_device_cdc.h"
 #include "usb_helpers.h"
-#include "uart.h"
 #include "leds.h"
 #include "time.h"
 
-void usbToSerialService()
-{
-    // When we receive bytes on the UART's RX line, send them on the
-    // virtual serial port.
-    while (uartRxAvailable() && cdcTxAvailable())
-    {
-        cdcTxSendByte(uartRxReceiveByte());
-    }
-
-    // When we receive bytes on the virtual USB serial port, send them on
-    // the UART's TX line.
-    while (cdcRxAvailable() && uartTxAvailable())
-    {
-        uartTxSendByte(cdcRxReceiveByte());
-    }
-}
-
-// When the computer sets the baud rate of the virtual USB serial port, we
-// set the baud rate of the UART to match it.
 void cdcSetBaudRateHandler()
 {
-    uartSetBaudRate(line_coding.dwDTERate);
 }
 
 void updateLeds()
@@ -62,14 +41,13 @@ void updateLeds()
     // Turn the yellow LED on.
     LED_YELLOW(1);
 
-    // The red LED is on the TX line (RC6), so we cannot control it.
-    // The TRISC6 bit is managed by uart.c.
+    // Turn the red LED off.
+    LED_RED(0);
 }
 
 void interrupt high_priority highIsr()
 {
     USBDeviceTasks();
-    uartIsr();
 }
 
 void interrupt low_priority lowIsr()
@@ -80,11 +58,9 @@ void main(void)
 {
     LEDS_INIT();
     timeInit();
-    uartInit();
     appUsbInit();
 
     // Enable interrupts with both high and low priority.
-    // (However, this example only uses high priority interrupts.)
     IPEN = 1;
     GIEL = 1;
     GIEH = 1;
@@ -92,7 +68,6 @@ void main(void)
     while (1)
     {
         timeService();
-        usbToSerialService();
         appUsbService();
         updateLeds();
     }

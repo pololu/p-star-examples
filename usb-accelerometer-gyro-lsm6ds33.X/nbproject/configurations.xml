@@ -6,7 +6,6 @@
                    projectFiles="true">
       <logicalFolder name="f2" displayName="Libraries" projectFiles="true">
         <itemPath>time.h</itemPath>
-        <itemPath>uart.h</itemPath>
         <itemPath>usb_helpers.h</itemPath>
         <itemPath>leds.h</itemPath>
         <itemPath>usb_config.h</itemPath>
@@ -32,7 +31,6 @@
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Libraries" projectFiles="true">
         <itemPath>time.c</itemPath>
-        <itemPath>uart.c</itemPath>
         <itemPath>usb_helpers.c</itemPath>
       </logicalFolder>
       <logicalFolder name="usb" displayName="USB Framework" projectFiles="true">
