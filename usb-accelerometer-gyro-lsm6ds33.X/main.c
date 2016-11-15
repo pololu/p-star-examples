@@ -82,6 +82,9 @@ void main(void)
             SEN = 1;
             LED_RED(1);
             //while (SEN);
+            __delay_us(50);
+            PEN = 1;
+            __delay_us(50);
             //LED_RED(0);
             //PEN = 1;
             //while (PEN);
