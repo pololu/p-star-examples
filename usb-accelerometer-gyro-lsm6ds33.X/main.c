@@ -6,6 +6,7 @@
 
 #include <xc.h>
 #include <stdint.h>
+#include <stdio.h>
 #include "usb.h"
 #include "usb_device.h"
 #include "usb_device_cdc.h"
@@ -67,11 +68,33 @@ void main(void)
     GIEL = 1;
     GIEH = 1;
 
+    uint8_t lastUpdateTime = 0;
     while (1)
     {
         timeService();
         appUsbService();
         updateLeds();
+
+        if ((uint8_t)(timeMs - lastUpdateTime) >= 100)
+        {
+            lastUpdateTime = (uint8_t)timeMs;
+
+            SEN = 1;
+            LED_RED(1);
+            //while (SEN);
+            //LED_RED(0);
+            //PEN = 1;
+            //while (PEN);
+
+            if (cdcTxAvailable() >= 64)
+            {
+                printf("SSP1STAT: %02X\r\n", SSP1STAT);
+            }
+        }
     }
 }
 
+void putch(char data)
+{
+    cdcTxSendByte(data);
+}

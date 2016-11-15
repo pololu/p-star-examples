@@ -33,6 +33,7 @@
       <logicalFolder name="f1" displayName="Libraries" projectFiles="true">
         <itemPath>time.c</itemPath>
         <itemPath>usb_helpers.c</itemPath>
+        <itemPath>i2c.c</itemPath>
       </logicalFolder>
       <logicalFolder name="usb" displayName="USB Framework" projectFiles="true">
         <itemPath>usb_device.c</itemPath>
@@ -40,7 +41,6 @@
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>usb_descriptors.c</itemPath>
-      <itemPath>i2c.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
