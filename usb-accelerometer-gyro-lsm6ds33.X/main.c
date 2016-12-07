@@ -79,19 +79,41 @@ void main(void)
         {
             lastUpdateTime = (uint8_t)timeMs;
 
+            uint8_t error = 0;
             LED_RED(1);
             i2cStart();
+            if (I2C_COLLISION())
+            {
+                error = 1;
+                goto readWhoamiDone;
+            }
             i2cWriteByte((0b1101011 << 1) | 0);  // Write to LSM6
+            if (!I2C_ACKED())
+            {
+                error = 2;
+                goto readWhoamiDone;
+            }
             i2cWriteByte(0x0F);  // WHO_AM_I address
+            if (!I2C_ACKED())
+            {
+                error = 3;
+                goto readWhoamiDone;
+            }
             i2cRepeatedStart();
             i2cWriteByte((0b1101011 << 1) | 1);  // Read from LSM6
+            if (!I2C_ACKED())
+            {
+                error = 20;
+                goto readWhoamiDone;
+            }
             i2cReadByte(0);
+            readWhoamiDone:
             i2cStop();
             LED_RED(0);
 
             if (cdcTxAvailable() >= 64)
             {
-                printf("SSP1STAT: %02X, SSP1CON2: %02X\r\n", SSP1STAT, SSP1CON2);
+                printf("SSP1STAT: %02X, SSP1CON2: %02X, error: %d\r\n", SSP1STAT, SSP1CON2, error);
             }
         }
     }
