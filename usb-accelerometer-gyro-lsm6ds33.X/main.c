@@ -86,6 +86,18 @@ void main(void)
             SSP1BUF = (0b1101011 << 1) | 0;
             //while (!SSPIF);
             __delay_us(140);
+            SSP1BUF = 0x0F;  // WHO_AM_I
+            __delay_us(140);
+            RSEN = 1;
+            while (RSEN);
+            SSP1BUF = (0b1101011 << 1) | 1;
+            __delay_us(140);
+            RCEN = 1;
+            __delay_us(140);
+            ACKDT = 1;
+            ACKEN = 1;
+            __delay_us(140);
+            SSPIF = 0;
             PEN = 1;
             while (PEN);
             LED_RED(0);
