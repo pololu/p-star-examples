@@ -84,10 +84,10 @@ void main(void)
             while (SEN);
             SSPIF = 0;
             SSP1BUF = (0b1101011 << 1) | 0;
-            //while (!SSPIF);
-            __delay_us(140);
+            while (!SSPIF);
+            SSPIF = 0;
             SSP1BUF = 0x0F;  // WHO_AM_I
-            __delay_us(140);
+            __delay_us(140); // while (!SSPIF);
             RSEN = 1;
             while (RSEN);
             SSP1BUF = (0b1101011 << 1) | 1;
