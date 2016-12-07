@@ -79,19 +79,20 @@ void main(void)
         {
             lastUpdateTime = (uint8_t)timeMs;
 
-            SEN = 1;
             LED_RED(1);
-            //while (SEN);
-            __delay_us(50);
+            SEN = 1;
+            while (SEN);
+            SSPIF = 0;
+            SSP1BUF = (0b1101011 << 1) | 0;
+            //while (!SSPIF);
+            __delay_us(140);
             PEN = 1;
-            __delay_us(50);
-            //LED_RED(0);
-            //PEN = 1;
-            //while (PEN);
+            while (PEN);
+            LED_RED(0);
 
             if (cdcTxAvailable() >= 64)
             {
-                printf("SSP1STAT: %02X\r\n", SSP1STAT);
+                printf("SSP1STAT: %02X, SSP1CON2: %02X\r\n", SSP1STAT, SSP1CON2);
             }
         }
     }
