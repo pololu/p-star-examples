@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>usb-accelerometer-gyro-lsm6ds33</name>
+            <name>usb-imu-lsm6</name>
             <creation-uuid>51730e21-acd0-4288-8840-81ac8b4dcdfe</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
