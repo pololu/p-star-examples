@@ -1,8 +1,8 @@
-// USB-to-Serial Adapter Example for the P-Star 25K50
+// USB acceleromter/gyro example for the LSM6DS33 and P-Star 25K50
 //
 // For more information, see:
 //
-//   https://github.com/pololu/p-star-examples/usb-to-serial.X/
+//   https://github.com/pololu/p-star-examples/usb-accelerometer-gyro-lsm6ds33.X/
 
 #include <xc.h>
 #include <stdint.h>
