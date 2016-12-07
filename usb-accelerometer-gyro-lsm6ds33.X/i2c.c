@@ -38,3 +38,42 @@ void i2cInit()
     // Set up I2C master mode, with clock = FOSC / 4 / (SSP1ADD+1).
     SSP1CON1 = 0b00101000;
 }
+
+void i2cStart()
+{
+    SEN = 1;
+    while (SEN);
+}
+
+void i2cRepeatedStart()
+{
+    RSEN = 1;
+    while (RSEN);
+}
+
+void i2cStop()
+{
+    PEN = 1;
+    while (PEN);
+}
+
+void i2cWriteByte(uint8_t b)
+{
+    SSPIF = 0;
+    SSP1BUF = b;
+    while (!SSPIF);
+}
+
+uint8_t i2cReadByte(uint8_t ack)
+{
+    SSPIF = 0;
+    RCEN = 1;
+    while (!SSPIF);
+    SSPIF = 0;
+    ACKDT = !ack;
+    ACKEN = 1;
+    while (!SSPIF);
+    uint8_t r = SSP1BUF;
+    if (BF) { __delay_us(100); }
+    return r;
+}

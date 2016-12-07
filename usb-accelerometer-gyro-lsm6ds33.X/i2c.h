@@ -10,5 +10,11 @@
 #include <stdint.h>
 
 void i2cInit();
+void i2cStart();
+void i2cRepeatedStart();
+void i2cStop();
+void i2cWriteByte(uint8_t b);
+uint8_t i2cReadByte(uint8_t ack);
+
 
 #endif

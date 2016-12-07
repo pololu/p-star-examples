@@ -80,28 +80,13 @@ void main(void)
             lastUpdateTime = (uint8_t)timeMs;
 
             LED_RED(1);
-            SEN = 1;
-            while (SEN);
-            SSPIF = 0;
-            SSP1BUF = (0b1101011 << 1) | 0;
-            while (!SSPIF);
-            SSPIF = 0;
-            SSP1BUF = 0x0F;  // WHO_AM_I
-            while (!SSPIF);
-            RSEN = 1;
-            while (RSEN);
-            SSPIF = 0;
-            SSP1BUF = (0b1101011 << 1) | 1;
-            while (!SSPIF);
-            SSPIF = 0;
-            RCEN = 1;
-            while (!SSPIF);
-            SSPIF = 0;
-            ACKDT = 1;
-            ACKEN = 1;
-            while (!SSPIF);
-            PEN = 1;
-            while (PEN);
+            i2cStart();
+            i2cWriteByte((0b1101011 << 1) | 0);  // Write to LSM6
+            i2cWriteByte(0x0F);  // WHO_AM_I address
+            i2cRepeatedStart();
+            i2cWriteByte((0b1101011 << 1) | 1);  // Read from LSM6
+            i2cReadByte(0);
+            i2cStop();
             LED_RED(0);
 
             if (cdcTxAvailable() >= 64)
