@@ -112,9 +112,10 @@ uint8_t i2cPerformTransfers(const I2CTransfer * transfer)
     i2cStart();
     if (I2C_COLLISION())
     {
-        return 1;  // tmphax error code
+        return 1;
     }
 
+    uint8_t n = 0;
     while (1)
     {
         if (transfer->flags & I2C_FLAG_READ)
@@ -123,7 +124,7 @@ uint8_t i2cPerformTransfers(const I2CTransfer * transfer)
             if (!I2C_ACKED())
             {
                 i2cStop();
-                return 2;  // tmphax error code
+                return 4 + (n * 4) + 1;
             }
 
             for (uint8_t i = 0; i < transfer->length; i++)
@@ -138,7 +139,7 @@ uint8_t i2cPerformTransfers(const I2CTransfer * transfer)
             if (!I2C_ACKED())
             {
                 i2cStop();
-                return 4;  // tmphax error code
+                return 4 + (n * 4) + 1;
             }
 
             for (uint8_t i = 0; i < transfer->length; i++)
@@ -147,19 +148,20 @@ uint8_t i2cPerformTransfers(const I2CTransfer * transfer)
                 if (!I2C_ACKED())
                 {
                     i2cStop();
-                    return 5;  // tmphax error code
+                    return 4 + (n * 4) + 2;
                 }
             }
         }
 
         if (transfer->flags & I2C_FLAG_STOP) { break; }
         transfer++;
+        n++;
 
         i2cRepeatedStart();
 
         if (I2C_COLLISION())
         {
-            return 6;  // tmphax error code
+            return 4 + (n * 4);
         }
     }
 
