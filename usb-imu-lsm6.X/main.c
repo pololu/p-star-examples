@@ -79,8 +79,10 @@ void main(void)
         {
             lastUpdateTime = (uint8_t)timeMs;
 
-            uint8_t error = 0;
             LED_RED(1);
+
+            /**
+            uint8_t error = 0;
             i2cStart();
             if (I2C_COLLISION())
             {
@@ -120,11 +122,25 @@ void main(void)
             readWhoamiStop:
             i2cStop();
             readWhoamiDone:
+            **/
+
+            static uint8_t tmpRegisterAddress;
+            static uint8_t buffer;
+            static const I2CTransfer transfers[] = {
+                { 0b1101011, 0, &tmpRegisterAddress, 1 },
+                { 0b1101011, I2C_FLAG_READ | I2C_FLAG_STOP, &buffer, 1 },
+            };
+
+            buffer = 0;
+            tmpRegisterAddress = 0x0F;  // WHO_AM_I
+
+            uint8_t result = i2cPerformTransfers(transfers);
+
             LED_RED(0);
 
             if (cdcTxAvailable() >= 64)
             {
-                printf("SSP1STAT: %02X, SSP1CON2: %02X, error: %d\r\n", SSP1STAT, SSP1CON2, error);
+                printf("result: %d, buffer: %d \r\n", result, buffer);
             }
         }
     }

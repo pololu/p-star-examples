@@ -47,6 +47,66 @@ void i2cInit()
     SSP1CON1 = 0b00101000;
 }
 
+uint8_t i2cPerformTransfers(const I2CTransfer * transfer)
+{
+    i2cStart();
+    if (I2C_COLLISION())
+    {
+        return 1;  // tmphax error code
+    }
+
+    while (1)
+    {
+        if (transfer->flags & I2C_FLAG_READ)
+        {
+            i2cWriteByte((transfer->address << 1) | 1);
+            if (!I2C_ACKED())
+            {
+                i2cStop();
+                return 2;  // tmphax error code
+            }
+
+            for (uint8_t i = 0; i < transfer->length; i++)
+            {
+                uint8_t ack = i < transfer->length - 1;
+                transfer->buffer[i] = i2cReadByte(ack);
+            }
+        }
+        else
+        {
+            i2cWriteByte(transfer->address << 1);
+            if (!I2C_ACKED())
+            {
+                i2cStop();
+                return 4;  // tmphax error code
+            }
+
+            for (uint8_t i = 0; i < transfer->length; i++)
+            {
+                i2cWriteByte(transfer->buffer[i]);
+                if (!I2C_ACKED())
+                {
+                    i2cStop();
+                    return 5;  // tmphax error code
+                }
+            }
+        }
+
+        if (transfer->flags & I2C_FLAG_STOP) { break; }
+        transfer++;
+
+        i2cRepeatedStart();
+
+        if (I2C_COLLISION())
+        {
+            return 6;  // tmphax error code
+        }
+    }
+
+    i2cStop();
+    return 0;
+}
+
 void i2cStart()
 {
     BCLIF = 0;

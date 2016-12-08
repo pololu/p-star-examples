@@ -12,6 +12,23 @@
 // This should be called at the beginning of the program.
 void i2cInit();
 
+/** High-level interface ******************************************************/
+
+typedef struct I2CTransfer {
+  uint8_t address;
+  uint8_t flags;
+  uint8_t * buffer;
+  uint8_t length;
+} I2CTransfer;
+
+// The flags field should be a combination of:
+#define I2C_FLAG_READ  0x01
+#define I2C_FLAG_STOP  0x02
+
+uint8_t i2cPerformTransfers(const I2CTransfer * transfers);
+
+/** Low-level interface *******************************************************/
+
 // Generates an I2C Start condition.  This function can fail if there is a bus
 // collision (see I2C_COLLISION()).
 void i2cStart();
