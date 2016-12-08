@@ -91,7 +91,7 @@ void main(void)
             if (!I2C_ACKED())
             {
                 error = 2;
-                goto readWhoamiDone;
+                goto readWhoamiStop;
             }
             i2cWriteByte(0x0F);  // WHO_AM_I address
             if (!I2C_ACKED())
@@ -100,15 +100,26 @@ void main(void)
                 goto readWhoamiDone;
             }
             i2cRepeatedStart();
+            if (I2C_COLLISION())
+            {
+                error = 4;
+                goto readWhoamiDone;
+            }
             i2cWriteByte((0b1101011 << 1) | 1);  // Read from LSM6
             if (!I2C_ACKED())
             {
-                error = 20;
+                error = 5;
+                goto readWhoamiStop;
+            }
+            if (I2C_COLLISION())
+            {
+                error = 6;
                 goto readWhoamiDone;
             }
             i2cReadByte(0);
-            readWhoamiDone:
+            readWhoamiStop:
             i2cStop();
+            readWhoamiDone:
             LED_RED(0);
 
             if (cdcTxAvailable() >= 64)
