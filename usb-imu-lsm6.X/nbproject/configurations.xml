@@ -11,6 +11,7 @@
         <itemPath>usb_config.h</itemPath>
         <itemPath>system.h</itemPath>
         <itemPath>i2c.h</itemPath>
+        <itemPath>lsm6.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="USB Framework" projectFiles="true">
         <itemPath>usb.h</itemPath>
@@ -34,6 +35,7 @@
         <itemPath>time.c</itemPath>
         <itemPath>usb_helpers.c</itemPath>
         <itemPath>i2c.c</itemPath>
+        <itemPath>lsm6.c</itemPath>
       </logicalFolder>
       <logicalFolder name="usb" displayName="USB Framework" projectFiles="true">
         <itemPath>usb_device.c</itemPath>
