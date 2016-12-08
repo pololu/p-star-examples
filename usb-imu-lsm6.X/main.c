@@ -79,51 +79,6 @@ void main(void)
         {
             lastUpdateTime = (uint8_t)timeMs;
 
-            LED_RED(1);
-
-            /**
-            uint8_t error = 0;
-            i2cStart();
-            if (I2C_COLLISION())
-            {
-                error = 1;
-                goto readWhoamiDone;
-            }
-            i2cWriteByte((0b1101011 << 1) | 0);  // Write to LSM6
-            if (!I2C_ACKED())
-            {
-                error = 2;
-                goto readWhoamiStop;
-            }
-            i2cWriteByte(0x0F);  // WHO_AM_I address
-            if (!I2C_ACKED())
-            {
-                error = 3;
-                goto readWhoamiDone;
-            }
-            i2cRepeatedStart();
-            if (I2C_COLLISION())
-            {
-                error = 4;
-                goto readWhoamiDone;
-            }
-            i2cWriteByte((0b1101011 << 1) | 1);  // Read from LSM6
-            if (!I2C_ACKED())
-            {
-                error = 5;
-                goto readWhoamiStop;
-            }
-            if (I2C_COLLISION())
-            {
-                error = 6;
-                goto readWhoamiDone;
-            }
-            i2cReadByte(0);
-            readWhoamiStop:
-            i2cStop();
-            readWhoamiDone:
-            **/
-
             static uint8_t tmpRegisterAddress;
             static uint8_t buffer;
             static const I2CTransfer transfers[] = {
@@ -134,8 +89,8 @@ void main(void)
             buffer = 0;
             tmpRegisterAddress = 0x0F;  // WHO_AM_I
 
+            LED_RED(1);
             uint8_t result = i2cPerformTransfers(transfers);
-
             LED_RED(0);
 
             if (cdcTxAvailable() >= 64)

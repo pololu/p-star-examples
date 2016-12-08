@@ -47,6 +47,66 @@ void i2cInit()
     SSP1CON1 = 0b00101000;
 }
 
+// Generates an I2C Start condition.  This function can fail if there is a bus
+// collision (see I2C_COLLISION()).
+static void i2cStart()
+{
+    BCLIF = 0;
+    SEN = 1;
+    while (SEN);
+}
+
+// Generates an I2C Repeated Start condition.  This function could cause an
+// infinite loop if there is something forcing the SCL line high or low.
+// This function can fail if there is a bus collision (see I2C_COLLISION()).
+static void i2cRepeatedStart()
+{
+    RSEN = 1;
+    while (RSEN);
+}
+
+// Generates an I2C Stop condition.  This function could cause an infinite loop
+// if there is something forcing the SDA line high or low.
+void i2cStop()
+{
+    PEN = 1;
+    while (PEN);
+}
+
+// Writes a byte to the I2C slave.  Use I2C_ACKED() if you want to know whether
+// the slave acknowledged the byte or not.  This function could cause an
+// infinite loop if there is something forcing the SCL line low.  This function
+// can fail if there is a bus collision (see I2C_COLLISION()).
+void i2cWriteByte(uint8_t b)
+{
+    SSPIF = 0;
+    SSP1BUF = b;
+    while (!SSPIF);
+}
+
+// Reads a byte from the I2C slave.  If the ack argument is 0, it does not
+// acknowledge the byte (meaning this is the last byte to be read).  If the ack
+// argument is 1, it acknowledges the byte.  This function could cause an
+// infinite loop if there is something forcing the SCL line low.
+uint8_t i2cReadByte(uint8_t ack)
+{
+    SSPIF = 0;
+    RCEN = 1;
+    while (!SSPIF);
+    uint8_t r = SSP1BUF;
+    ACKDT = !ack;
+    ACKEN = 1;
+    while (ACKEN);
+    return r;
+}
+
+// Returns 1 if there was an I2C bus collision and 0 if there was not.
+#define I2C_COLLISION() (BCLIF)
+
+// This is meant to be called after i2cWriteByte and it returns 1 if
+// an acknowledgment was received from the slave for the byte written.
+#define I2C_ACKED() (!ACKSTAT)
+
 uint8_t i2cPerformTransfers(const I2CTransfer * transfer)
 {
     i2cStart();
@@ -105,42 +165,4 @@ uint8_t i2cPerformTransfers(const I2CTransfer * transfer)
 
     i2cStop();
     return 0;
-}
-
-void i2cStart()
-{
-    BCLIF = 0;
-    SEN = 1;
-    while (SEN);
-}
-
-void i2cRepeatedStart()
-{
-    RSEN = 1;
-    while (RSEN);
-}
-
-void i2cStop()
-{
-    PEN = 1;
-    while (PEN);
-}
-
-void i2cWriteByte(uint8_t b)
-{
-    SSPIF = 0;
-    SSP1BUF = b;
-    while (!SSPIF);
-}
-
-uint8_t i2cReadByte(uint8_t ack)
-{
-    SSPIF = 0;
-    RCEN = 1;
-    while (!SSPIF);
-    uint8_t r = SSP1BUF;
-    ACKDT = !ack;
-    ACKEN = 1;
-    while (ACKEN);
-    return r;
 }
