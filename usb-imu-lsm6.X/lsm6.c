@@ -9,9 +9,9 @@
 #define DS33_SA0_HIGH_ADDRESS 0b1101011
 #define DS33_SA0_LOW_ADDRESS  0b1101010
 
-#define TEST_REG_ERROR -1
-
 #define DS33_WHO_ID 0x69
+
+#define TEST_REG_ERROR -1
 
 static int16_t lsm6TestReg(uint8_t address, uint8_t reg)
 {
@@ -32,7 +32,7 @@ static int16_t lsm6TestReg(uint8_t address, uint8_t reg)
 uint8_t lsm6Init(LSM6 * this, enum LSM6DeviceType device, enum LSM6SA0State sa0)
 {
     // Detect the device type and SA0 state if needed, and also see if we
-    // can talk to the device.    
+    // can talk to the device.
     uint8_t deviceFound = 0;
     if (device == LSM6_DEVICE_TYPE_AUTO || device == LSM6_DEVICE_TYPE_DS33)
     {
@@ -42,7 +42,7 @@ uint8_t lsm6Init(LSM6 * this, enum LSM6DeviceType device, enum LSM6SA0State sa0)
             device = LSM6_DEVICE_TYPE_DS33;
             deviceFound = 1;
         }
-        
+
         if (sa0 != LSM6_SA0_HIGH && lsm6TestReg(DS33_SA0_LOW_ADDRESS, LSM6_WHO_AM_I) == DS33_WHO_ID)
         {
             sa0 = LSM6_SA0_LOW;
@@ -61,29 +61,29 @@ uint8_t lsm6Init(LSM6 * this, enum LSM6DeviceType device, enum LSM6SA0State sa0)
 
 void lsm6EnableDefault(LSM6 * this)
 {
-  if (this->device == LSM6_DEVICE_TYPE_DS33)
-  {
-    // Accelerometer
+    if (this->device == LSM6_DEVICE_TYPE_DS33)
+    {
+        // Accelerometer
 
-    // 0x80 = 0b10000000
-    // ODR = 1000 (1.66 kHz (high performance)); FS_XL = 00 (+/-2 g full scale)
-    lsm6WriteReg(this, LSM6_CTRL1_XL, 0x80);
-    if (this->lastResult) { return; }
+        // 0x80 = 0b10000000
+        // ODR = 1000 (1.66 kHz (high performance)); FS_XL = 00 (+/-2 g full scale)
+        lsm6WriteReg(this, LSM6_CTRL1_XL, 0x80);
+        if (this->lastResult) { return; }
 
-    // Gyro
+        // Gyro
 
-    // 0x80 = 0b010000000
-    // ODR = 1000 (1.66 kHz (high performance)); FS_XL = 00 (245 dps)
-    lsm6WriteReg(this, LSM6_CTRL2_G, 0x80);
-    if (this->lastResult) { return; }
+        // 0x80 = 0b010000000
+        // ODR = 1000 (1.66 kHz (high performance)); FS_XL = 00 (245 dps)
+        lsm6WriteReg(this, LSM6_CTRL2_G, 0x80);
+        if (this->lastResult) { return; }
 
-    // Common
+        // Common
 
-    // 0x04 = 0b00000100
-    // IF_INC = 1 (automatically increment register address)
-    lsm6WriteReg(this, LSM6_CTRL3_C, 0x04);
-    if (this->lastResult) { return; }
-  }
+        // 0x04 = 0b00000100
+        // IF_INC = 1 (automatically increment register address)
+        lsm6WriteReg(this, LSM6_CTRL3_C, 0x04);
+        if (this->lastResult) { return; }
+    }
 }
 
 void lsm6WriteReg(LSM6 * this, uint8_t reg, uint8_t value)
@@ -147,7 +147,7 @@ void lsm6ReadAcc(LSM6 * this)
 
     this->a[0] = (int16_t)(buffer[1] << 8 | buffer[0]);
     this->a[1] = (int16_t)(buffer[3] << 8 | buffer[2]);
-    this->a[2] = (int16_t)(buffer[5] << 8 | buffer[4]);    
+    this->a[2] = (int16_t)(buffer[5] << 8 | buffer[4]);
 }
 
 // Reads the 3 gyro channels and stores them in vector g
@@ -171,5 +171,5 @@ void lsm6ReadGyro(LSM6 * this)
 
     this->g[0] = (int16_t)(buffer[1] << 8 | buffer[0]);
     this->g[1] = (int16_t)(buffer[3] << 8 | buffer[2]);
-    this->g[2] = (int16_t)(buffer[5] << 8 | buffer[4]); 
+    this->g[2] = (int16_t)(buffer[5] << 8 | buffer[4]);
 }

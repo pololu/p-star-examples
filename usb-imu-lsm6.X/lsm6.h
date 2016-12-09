@@ -109,8 +109,8 @@ typedef struct LSM6 {
     int16_t g[3];
 } LSM6;
 
-// Detects what type of device is present on the I2C bus and confirms that we
-// can communicate with it. Returns 1 for success and 0 for failure.
+// Initializes the library can confirms that we can communicate with
+// the device.  Returns 1 for success and 0 for failure.
 uint8_t lsm6Init(LSM6 *, enum LSM6DeviceType, enum LSM6SA0State);
 
 // Enables the LSM6's accelerometer and gyro. Also:

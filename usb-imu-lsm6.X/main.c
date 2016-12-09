@@ -1,4 +1,4 @@
-// USB inertial measurement unit example for the LSM6DS33 and P-Star 25K50
+// USB accelerometer/gyro example for the LSM6DS33 and P-Star 25K50
 //
 // For more information, see:
 //
@@ -17,7 +17,7 @@
 #include "lsm6.h"
 
 LSM6 imu;
-uint8_t lsm6Found;
+uint8_t imuFound;
 
 void cdcSetBaudRateHandler()
 {
@@ -48,7 +48,7 @@ void updateLeds()
     LED_YELLOW(1);
 
     // Turn the red LED on if we could not find the LSM6.
-    LED_RED(!lsm6Found);
+    LED_RED(!imuFound);
 }
 
 void interrupt high_priority highIsr()
@@ -73,7 +73,7 @@ void imuToUsbService()
 
     lastUpdateTime = (uint8_t)timeMs;
 
-    if (!lsm6Found)
+    if (!imuFound)
     {
         // We failed to detect the IMU on startup.
         printf("not found\r\n");
@@ -106,16 +106,15 @@ void main(void)
     LEDS_INIT();
     timeInit();
     appUsbInit();
+    i2cInit();
+    imuFound = lsm6Init(&imu, LSM6_DEVICE_TYPE_AUTO, LSM6_SA0_AUTO);
 
-    i2cInit();   // must be before lsm6Init
-    lsm6Found = lsm6Init(&imu, LSM6_DEVICE_TYPE_AUTO, LSM6_SA0_AUTO);
-
-    if (lsm6Found)
+    if (imuFound)
     {
         lsm6EnableDefault(&imu);
     }
 
-    // Enable interrupts with both high and low priority.
+    // Enable interrupts and interrupt priorities.
     IPEN = 1;
     GIEL = 1;
     GIEH = 1;
