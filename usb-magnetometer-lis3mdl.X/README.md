@@ -78,8 +78,12 @@ The red LED will be on if the LIS3MDL was not detected when starting up.
 
 ## Example uses
 
-It would be possible to take pieces of this example, such as the USB code or the
+It would also be possible to take pieces of this example, such as the USB code or the
 I2C code, and reuse them in different applications.
+
+With proper calibration of the magnetometer, it might be possible to use this
+code to sense nearby magnets or to sense the magnetic field of the earth to tell
+which way is north.
 
 
 ## Source file organization
