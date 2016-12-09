@@ -17,6 +17,7 @@
 #include "lsm6.h"
 
 LSM6 imu;
+uint8_t lsm6Found;
 
 void cdcSetBaudRateHandler()
 {
@@ -46,8 +47,8 @@ void updateLeds()
     // Turn the yellow LED on.
     LED_YELLOW(1);
 
-    // Turn the red LED off.
-    LED_RED(0);
+    // Turn the red LED on if we could not find the LSM6.
+    LED_RED(!lsm6Found);
 }
 
 void interrupt high_priority highIsr()
@@ -59,6 +60,39 @@ void interrupt low_priority lowIsr()
 {
 }
 
+void imuToUsbService()
+{
+    static uint8_t lastUpdateTime = 0;
+
+    if ((uint8_t)(timeMs - lastUpdateTime) >= 20 && cdcTxAvailable() >= 64)
+    {
+        lastUpdateTime = (uint8_t)timeMs;
+
+        if (lsm6Found)
+        {
+            lsm6Read(&imu);
+
+            if (imu.lastResult)
+            {
+                // The IMU was detected earlier but we can't talk to it now.
+                printf("error\r\n");
+            }
+            else
+            {
+                printf("A: %6d %6d %6d    G: %6d %6d %6d\r\n",
+                    imu.a[0], imu.a[1], imu.a[2],
+                    imu.g[0], imu.g[1], imu.g[2]);
+            }
+        }
+        else
+        {
+            // We failed to detect the IMU on startup, so we don't try to
+            // talk to it.
+            printf("not found\r\n");
+        }
+    }
+}
+
 void main(void)
 {
     LEDS_INIT();
@@ -66,31 +100,24 @@ void main(void)
     appUsbInit();
 
     i2cInit();   // must be before lsm6Init
-    lsm6Init(&imu, LSM6_DEVICE_TYPE_AUTO, LSM6_SA0_AUTO);
+    lsm6Found = lsm6Init(&imu, LSM6_DEVICE_TYPE_AUTO, LSM6_SA0_AUTO);
+
+    if (lsm6Found)
+    {
+        lsm6EnableDefault(&imu);
+    }
 
     // Enable interrupts with both high and low priority.
     IPEN = 1;
     GIEL = 1;
     GIEH = 1;
 
-    uint8_t lastUpdateTime = 0;
     while (1)
     {
         timeService();
         appUsbService();
         updateLeds();
-
-        if ((uint8_t)(timeMs - lastUpdateTime) >= 100)
-        {
-            lastUpdateTime = (uint8_t)timeMs;
-
-            uint8_t found = lsm6Init(&imu, LSM6_DEVICE_TYPE_AUTO, LSM6_SA0_AUTO);
-
-            if (cdcTxAvailable() >= 64)
-            {
-                printf("found: %d %d %d\r\n", found, imu.device, imu.address);
-            }
-        }
+        imuToUsbService();
     }
 }
 

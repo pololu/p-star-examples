@@ -1,3 +1,8 @@
+// Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
+
+// This is the header file for lsm6.c, a library for reading data from the
+// LSM6DS33 accelerometer/gyro.
+
 #ifndef _LSM6_H
 #define _LSM6_H
 
@@ -14,6 +19,7 @@ enum LSM6SA0State {
     LSM6_SA0_HIGH
 };
 
+// Addresses of LSM6 registers.
 enum LSM6RegAddr
 {
     LSM6_FUNC_CFG_ACCESS   = 0x01,
@@ -86,11 +92,20 @@ enum LSM6RegAddr
     LSM6_MD2_CFG           = 0x5F,
 };
 
+// Represents a single LSM6DS33 device.
 typedef struct LSM6 {
     enum LSM6DeviceType device;
     uint8_t address;
+
+    // Functions that perform I2C transfers to the LSM6 will modify this variable
+    // to indicate whether they succeeded.  0 means success, non-zero indicates
+    // an error.
     uint8_t lastResult;
+
+    // The last set of raw accelerometer readings from the device, in XYZ order.
     int16_t a[3];
+
+    // The last set of raw gyro readings from the device, in XYZ order.
     int16_t g[3];
 } LSM6;
 
@@ -98,13 +113,37 @@ typedef struct LSM6 {
 // can communicate with it. Returns 1 for success and 0 for failure.
 uint8_t lsm6Init(LSM6 *, enum LSM6DeviceType, enum LSM6SA0State);
 
+// Enables the LSM6's accelerometer and gyro. Also:
+//
+// - Sets sensor full scales (gain) to default power-on values, which are
+//   +/- 2 g for accelerometer and 245 dps for gyro
+// - Selects 1.66 kHz (high performance) ODR (output data rate) for
+//   accelerometer and 1.66 kHz (high performance) ODR for gyro. (These are the
+//   ODR settings for which the electrical characteristics are specified in the
+//   datasheet.)
+// - Enables automatic increment of register address during multiple byte access
+//
+// Note that this function will also reset other settings controlled by
+// the registers it writes to.
 void lsm6EnableDefault(LSM6 *);
 
+// Writes to one of the LSM6 registers.  The "reg" argument should be the
+// register address and the "value" argument should be the value to write.
 void lsm6WriteReg(LSM6 *, uint8_t reg, uint8_t value);
+
+// Reads from an LSM6 register and returns the value.  The "reg" argument should
+// be the register address.
 uint8_t lsm6ReadReg(LSM6 *, uint8_t reg);
 
+// Reads from the accelerometer and gyro and stores the results in the "a" and
+// "g" members of the LSM6 object.
 void lsm6Read(LSM6 *);
+
+// Reads the accelerometer and stores the results in the "a" member of the LSM6
+// object.
 void lsm6ReadAcc(LSM6 *);
+
+// Reads the gyro and stores the results in the "g" member of the LSM6 object.
 void lsm6ReadGyro(LSM6 *);
 
 #endif

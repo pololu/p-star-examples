@@ -1,3 +1,8 @@
+// Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
+
+// A library for reading data from the LSM6DS33 accelerometer/gyro.  See lsm6.h
+// for documentation.
+
 #include "lsm6.h"
 #include "i2c.h"
 
@@ -54,16 +59,6 @@ uint8_t lsm6Init(LSM6 * this, enum LSM6DeviceType device, enum LSM6SA0State sa0)
     return 1;
 }
 
-// Enables the LSM6's accelerometer and gyro. Also:
-// - Sets sensor full scales (gain) to default power-on values, which are
-//   +/- 2 g for accelerometer and 245 dps for gyro
-// - Selects 1.66 kHz (high performance) ODR (output data rate) for
-//   accelerometer and 1.66 kHz (high performance) ODR for gyro. (These are the
-//   ODR settings for which the electrical characteristics are specified in the
-//   datasheet.)
-// - Enables automatic increment of register address during multiple byte access
-//   Note that this function will also reset other settings controlled by
-//   the registers it writes to.
 void lsm6EnableDefault(LSM6 * this)
 {
   if (this->device == LSM6_DEVICE_TYPE_DS33)

@@ -2,7 +2,7 @@
 
 // This is a library for using the PIC18F25K50's Master Synchronous
 // Serial Port (MSSP) in I2C Master mode to communicate with I2C
-// devices.
+// devices.  See i2c.h for documentation.
 
 // TODO: allow setting the speed
 
