@@ -63,11 +63,11 @@ sensor readings.  Each line in the serial data will have six integers and be
 formatted like this:
 
 ```
-AX AY AZ  GX GY GZ
+A:   -560   -150  16516    G:    380   -636    -37
 ```
 
-where `AX AY AZ` is the raw reading from the accelerometer, and
-`GX GY GZ` is the raw reading from the gyro.
+The first three numbers are the raw readings from the accelerometer, and
+the last three numbers are the raw readings from the gyro.
 
 
 ## LED behavior
@@ -80,7 +80,7 @@ second.  If USB power is not detected, the green LED is off.
 
 The yellow LED will always be on while this example is running.
 
-The red LED will always be off.
+The red LED will be on if the LSM6DS33 was not detected when starting up.
 
 
 ## Example uses
