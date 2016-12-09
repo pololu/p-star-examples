@@ -8,7 +8,6 @@
 #include "usb_device.h"
 #include "usb_device_cdc.h"
 #include "usb_helpers.h"
-#include "uart.h"
 
 static uint8_t cdcRxBufferLength = 0;
 static uint8_t cdcRxBufferIndex = 0;

@@ -39,7 +39,7 @@ groups.each do |name, files|
 
   if hashes.uniq.size != 1
     files.zip(hashes) do |file, hash|
-      puts "%-40s %7s" % [file, hash[0, 7]]
+      puts "%7s %s" % [hash[0, 7], file]
     end
   end
 end
