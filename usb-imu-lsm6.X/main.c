@@ -14,6 +14,9 @@
 #include "leds.h"
 #include "time.h"
 #include "i2c.h"
+#include "lsm6.h"
+
+LSM6 imu;
 
 void cdcSetBaudRateHandler()
 {
@@ -61,7 +64,9 @@ void main(void)
     LEDS_INIT();
     timeInit();
     appUsbInit();
-    i2cInit();
+
+    i2cInit();   // must be before lsm6Init
+    lsm6Init(&imu, LSM6_DEVICE_TYPE_AUTO, LSM6_SA0_AUTO);
 
     // Enable interrupts with both high and low priority.
     IPEN = 1;
@@ -79,23 +84,11 @@ void main(void)
         {
             lastUpdateTime = (uint8_t)timeMs;
 
-            static uint8_t tmpRegisterAddress;
-            static uint8_t buffer;
-            static const I2CTransfer transfers[] = {
-                { 0b1101011, 0, &tmpRegisterAddress, 1 },
-                { 0b1101011, I2C_FLAG_READ | I2C_FLAG_STOP, &buffer, 1 },
-            };
-
-            buffer = 0;
-            tmpRegisterAddress = 0x0F;  // WHO_AM_I
-
-            LED_RED(1);
-            uint8_t result = i2cPerformTransfers(transfers);
-            LED_RED(0);
+            uint8_t found = lsm6Init(&imu, LSM6_DEVICE_TYPE_AUTO, LSM6_SA0_AUTO);
 
             if (cdcTxAvailable() >= 64)
             {
-                printf("result: %d, buffer: %d \r\n", result, buffer);
+                printf("found: %d %d %d\r\n", found, imu.device, imu.address);
             }
         }
     }

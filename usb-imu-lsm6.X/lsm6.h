@@ -1,6 +1,8 @@
 #ifndef _LSM6_H
 #define _LSM6_H
 
+#include <stdint.h>
+
 enum LSM6DeviceType {
     LSM6_DEVICE_TYPE_AUTO,
     LSM6_DEVICE_TYPE_DS33
@@ -85,7 +87,7 @@ enum LSM6RegAddr
 };
 
 typedef struct LSM6 {
-    LSM6DeviceType deviceType;
+    enum LSM6DeviceType device;
     uint8_t address;
     uint8_t lastResult;
     int16_t a[3];
@@ -94,12 +96,12 @@ typedef struct LSM6 {
 
 // Detects what type of device is present on the I2C bus and confirms that we
 // can communicate with it. Returns 1 for success and 0 for failure.
-uint8_t lsm6Init(LSM6 *, LSM6DeviceType, LSM6AddressType);
+uint8_t lsm6Init(LSM6 *, enum LSM6DeviceType, enum LSM6SA0State);
 
 void lsm6EnableDefault(LSM6 *);
 
-void lsm6WriteReg(LSM6 *, uint8_t value);
-uint8_t lsm6ReadReg(LSM6 *);
+void lsm6WriteReg(LSM6 *, uint8_t reg, uint8_t value);
+uint8_t lsm6ReadReg(LSM6 *, uint8_t reg);
 
 void lsm6Read(LSM6 *);
 void lsm6ReadAcc(LSM6 *);
