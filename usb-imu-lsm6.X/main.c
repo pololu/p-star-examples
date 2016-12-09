@@ -64,33 +64,41 @@ void imuToUsbService()
 {
     static uint8_t lastUpdateTime = 0;
 
-    if ((uint8_t)(timeMs - lastUpdateTime) >= 20 && cdcTxAvailable() >= 64)
+    // If we already sent a report in the last 20 ms, don't send one now.
+    if ((uint8_t)(timeMs - lastUpdateTime) < 20) { return; }
+
+    // If we do not have buffer space available to send data to the USB host,
+    // just return.
+    if (cdcTxAvailable() < 64) { return; }
+
+    lastUpdateTime = (uint8_t)timeMs;
+
+    if (!lsm6Found)
     {
-        lastUpdateTime = (uint8_t)timeMs;
-
-        if (lsm6Found)
-        {
-            lsm6Read(&imu);
-
-            if (imu.lastResult)
-            {
-                // The IMU was detected earlier but we can't talk to it now.
-                printf("error\r\n");
-            }
-            else
-            {
-                printf("A: %6d %6d %6d    G: %6d %6d %6d\r\n",
-                    imu.a[0], imu.a[1], imu.a[2],
-                    imu.g[0], imu.g[1], imu.g[2]);
-            }
-        }
-        else
-        {
-            // We failed to detect the IMU on startup, so we don't try to
-            // talk to it.
-            printf("not found\r\n");
-        }
+        // We failed to detect the IMU on startup.
+        printf("not found\r\n");
+        return;
     }
+
+    // Try to read sensor data from the IMU.
+    lsm6Read(&imu);
+
+    if (imu.lastResult)
+    {
+        printf("error\r\n");
+        return;
+    }
+
+    // Send the IMU data to the USB host.  This uses our definition of
+    // putchar below.
+    printf("A: %6d %6d %6d    G: %6d %6d %6d\r\n",
+        imu.a[0], imu.a[1], imu.a[2],
+        imu.g[0], imu.g[1], imu.g[2]);
+}
+
+void putch(char data)
+{
+    cdcTxSendByte(data);
 }
 
 void main(void)
@@ -119,9 +127,4 @@ void main(void)
         updateLeds();
         imuToUsbService();
     }
-}
-
-void putch(char data)
-{
-    cdcTxSendByte(data);
 }
