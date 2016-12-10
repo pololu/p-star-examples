@@ -11,8 +11,6 @@
 
 #define LIS3MDL_WHO_ID 0x3D
 
-#define TEST_REG_ERROR -1
-
 static int16_t lis3mdlTestReg(uint8_t address, uint8_t reg)
 {
     uint8_t value = 0;
@@ -25,7 +23,7 @@ static int16_t lis3mdlTestReg(uint8_t address, uint8_t reg)
     transfers[1].flags = I2C_FLAG_READ | I2C_FLAG_STOP;
     transfers[1].buffer = &value;
     transfers[1].length = 1;
-    if (i2cPerformTransfers(transfers)) { return TEST_REG_ERROR; }
+    if (i2cPerformTransfers(transfers)) { return -1; }
     return value;
 }
 

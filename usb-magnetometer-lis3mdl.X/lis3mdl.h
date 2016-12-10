@@ -59,7 +59,7 @@ typedef struct LIS3MDL {
     int16_t m[3];
 } LIS3MDL;
 
-// Initializes the library can confirms that we can communicate with the device.
+// Initializes the library and confirms that we can communicate with the device.
 // Returns 1 for success and 0 for failure.
 uint8_t lis3mdlInit(LIS3MDL *, enum LIS3MDLDeviceType, enum LIS3MDLSA1State);
 

@@ -107,17 +107,18 @@ void main(void)
     timeInit();
     appUsbInit();
     i2cInit();
+
+    // Enable interrupts and interrupt priorities.
+    IPEN = 1;
+    GIEL = 1;
+    GIEH = 1;
+
     imuFound = lsm6Init(&imu, LSM6_DEVICE_TYPE_AUTO, LSM6_SA0_AUTO);
 
     if (imuFound)
     {
         lsm6EnableDefault(&imu);
     }
-
-    // Enable interrupts and interrupt priorities.
-    IPEN = 1;
-    GIEL = 1;
-    GIEH = 1;
 
     while (1)
     {

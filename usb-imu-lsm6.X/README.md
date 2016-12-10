@@ -34,7 +34,7 @@ the following carrier boards:
 * [AltIMU-10 v5 (LSM6DS33, LIS3MDL, and LPS25H Carrier)](https://www.pololu.com/product/2739)
 
 You should power the LSM6DS33 carrier by connecting the P-Star's GND pin to the
-carrier's GND and connecitng the P-Star's VDD to the carrier's VIN.  You should
+carrier's GND and connecting the P-Star's VDD to the carrier's VIN.  You should
 also connect the P-Star's RB0 pin to the carrier's SDA pin, and connect the
 P-Star's RB1 pin to the carrier's SCL pin.
 
@@ -85,10 +85,18 @@ The red LED will be on if the LSM6DS33 was not detected when starting up.
 
 ## Example uses
 
+The accelerometer readings can be used to detect which way is up, or
+to detect shaking or vibrations.
+
+If you calibrate for the gyro's zero-rate level, you can sum up the
+gyro readings for upwards axis in order to see how far a robot has
+turned to the left or right.
+
+The example could be expanded to implement sensor fusion.
+
 It would be possible to take pieces of this example, such as the USB code or the
 I2C code, and reuse them in different applications.
 
-The example could be expanded to implement sensor fusion.
 
 
 ## Source file organization

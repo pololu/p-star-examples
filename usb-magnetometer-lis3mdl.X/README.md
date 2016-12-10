@@ -34,7 +34,7 @@ the following carrier boards:
 * [AltIMU-10 v5 (LSM6DS33, LIS3MDL, and LPS25H Carrier)](https://www.pololu.com/product/2739)
 
 You should power the LIS3MDL carrier by connecting the P-Star's GND pin to the
-carrier's GND and connecitng the P-Star's VDD to the carrier's VIN.  You should
+carrier's GND and connecting the P-Star's VDD to the carrier's VIN.  You should
 also connect the P-Star's RB0 pin to the carrier's SDA pin, and connect the
 P-Star's RB1 pin to the carrier's SCL pin.
 
@@ -78,12 +78,12 @@ The red LED will be on if the LIS3MDL was not detected when starting up.
 
 ## Example uses
 
-It would also be possible to take pieces of this example, such as the USB code or the
-I2C code, and reuse them in different applications.
-
 With proper calibration of the magnetometer, it might be possible to use this
 code to sense nearby magnets or to sense the magnetic field of the earth to tell
 which way is north.
+
+It would also be possible to take pieces of this example, such as the USB code or the
+I2C code, and reuse them in different applications.
 
 
 ## Source file organization

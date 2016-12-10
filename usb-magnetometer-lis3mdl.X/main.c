@@ -104,17 +104,18 @@ void main(void)
     timeInit();
     appUsbInit();
     i2cInit();
+
+    // Enable interrupts and interrupt priorities.
+    IPEN = 1;
+    GIEL = 1;
+    GIEH = 1;
+
     magFound = lis3mdlInit(&mag, LIS3MDL_DEVICE_TYPE_AUTO, LIS3MDL_SA1_AUTO);
 
     if (magFound)
     {
         lis3mdlEnableDefault(&mag);
     }
-
-    // Enable interrupts and interrupt priorities.
-    IPEN = 1;
-    GIEL = 1;
-    GIEH = 1;
 
     while (1)
     {
