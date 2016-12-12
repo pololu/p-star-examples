@@ -36,17 +36,17 @@ uint8_t lps25hInit(LPS25H * this, enum LPS25HDeviceType device, enum LPS25HSA0St
     if (device == LPS25H_DEVICE_TYPE_AUTO || device == LPS25H_DEVICE_TYPE_LPS25H)
     {
         if (sa0 != LPS25H_SA0_LOW &&
-            lps25hTestReg(LPS25H_SA1_HIGH_ADDRESS, LPS25H_WHO_AM_I) == LPS25H_WHO_ID)
+            lps25hTestReg(SA0_HIGH_ADDRESS, LPS25H_WHO_AM_I) == LPS25H_WHO_ID)
         {
             sa0 = LPS25H_SA0_HIGH;
             device = LPS25H_DEVICE_TYPE_LPS25H;
             deviceFound = 1;
         }
 
-        if (sa1 != LPS25H_SA0_HIGH &&
-            lis3mdlTestReg(LPS25H_SA0_LOW_ADDRESS, LPS25H_WHO_AM_I) == LPS25H_WHO_ID)
+        if (sa0 != LPS25H_SA0_HIGH &&
+            lps25hTestReg(SA0_LOW_ADDRESS, LPS25H_WHO_AM_I) == LPS25H_WHO_ID)
         {
-            sa1 = LPS25H_SA0_HIGH;
+            sa0 = LPS25H_SA0_HIGH;
             device = LPS25H_DEVICE_TYPE_LPS25H;
             deviceFound = 1;
         }
@@ -55,23 +55,23 @@ uint8_t lps25hInit(LPS25H * this, enum LPS25HDeviceType device, enum LPS25HSA0St
     if (!deviceFound) { return 0; }
 
     this->device = device;
-    this->address = (sa1 == LPS25H_SA1_HIGH) ?
-        LPS25H_SA0_HIGH_ADDRESS : LPS25H_SA0_LOW_ADDRESS;
+    this->address = (sa0 == LPS25H_SA0_HIGH) ?
+        SA0_HIGH_ADDRESS : SA0_LOW_ADDRESS;
 
     return 1;
 }
 
-void lis3mdlEnableDefault(LIS3MDL * this)
+void lps25hEnableDefault(LPS25H * this)
 {
-    if (this->device == LIS3MD_DEVICE_TYPE_LIS3MDL)
+    if (this->device == LPS25H_DEVICE_TYPE_LPS25H)
     {
         // PD = 1 (active mode)
         // ODR = 011 (12.5 Hz pressure & temperature output data rate)
-        writeReg(CTRL_REG1, 0b101100);
+        lps25hWriteReg(this, LPS25H_CTRL_REG1, 0b10110000);
     }
 }
 
-void lis3mdlWriteReg(LIS3MDL * this, uint8_t reg, uint8_t value)
+void lps25hWriteReg(LPS25H * this, uint8_t reg, uint8_t value)
 {
     uint8_t buffer[2];
     buffer[0] = reg;
@@ -86,7 +86,7 @@ void lis3mdlWriteReg(LIS3MDL * this, uint8_t reg, uint8_t value)
     this->lastResult = i2cPerformTransfers(transfers);
 }
 
-uint8_t lis3mdlReadReg(LIS3MDL * this, uint8_t reg)
+uint8_t lps25hReadReg(LPS25H * this, uint8_t reg)
 {
     uint8_t value = 0;
 
@@ -104,11 +104,11 @@ uint8_t lis3mdlReadReg(LIS3MDL * this, uint8_t reg)
     return value;
 }
 
-// Reads the 3 magnetometer channels and stores them in array m.
-void lis3mdlRead(LIS3MDL * this)
+int24_t lps25hReadPressureRaw(LPS25H * this)
 {
-    uint8_t reg = LIS3MDL_OUT_X_L;
-    uint8_t buffer[6];
+    // Set MSB to 1 to enable register address auto-increment.
+    uint8_t reg = LPS25H_PRESS_OUT_XL | 0x80;
+    uint8_t buffer[3];
 
     I2CTransfer transfers[2];
     transfers[0].address = this->address;
@@ -118,12 +118,35 @@ void lis3mdlRead(LIS3MDL * this)
     transfers[1].address = this->address;
     transfers[1].flags = I2C_FLAG_READ | I2C_FLAG_STOP;
     transfers[1].buffer = &buffer;
-    transfers[1].length = 6;
+    transfers[1].length = 3;
 
     this->lastResult = i2cPerformTransfers(transfers);
-    if (this->lastResult) { return; }
+    if (this->lastResult) { return 0; }
 
-    this->m[0] = (int16_t)(buffer[1] << 8 | buffer[0]);
-    this->m[1] = (int16_t)(buffer[3] << 8 | buffer[2]);
-    this->m[2] = (int16_t)(buffer[5] << 8 | buffer[4]);
+    return (int24_t)(
+        (buffer[0]) |
+        (buffer[1] << 8) |
+        ((uint24_t)buffer[2] << 16));
+}
+
+int16_t lps25hReadTemperatureRaw(LPS25H * this)
+{
+    // Set MSB to 1 to enable register address auto-increment.
+    uint8_t reg = LPS25H_TEMP_OUT_L | 0x80;
+    uint8_t buffer[2];
+
+    I2CTransfer transfers[2];
+    transfers[0].address = this->address;
+    transfers[0].flags = 0;
+    transfers[0].buffer = &reg;
+    transfers[0].length = 1;
+    transfers[1].address = this->address;
+    transfers[1].flags = I2C_FLAG_READ | I2C_FLAG_STOP;
+    transfers[1].buffer = &buffer;
+    transfers[1].length = 2;
+
+    this->lastResult = i2cPerformTransfers(transfers);
+    if (this->lastResult) { return 0; }
+
+    return (int16_t)((uint16_t)buffer[0] | (uint16_t)buffer[1] << 8);
 }

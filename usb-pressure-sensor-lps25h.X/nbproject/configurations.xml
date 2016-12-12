@@ -11,7 +11,7 @@
         <itemPath>usb_config.h</itemPath>
         <itemPath>system.h</itemPath>
         <itemPath>i2c.h</itemPath>
-        <itemPath>lis3mdl.h</itemPath>
+        <itemPath>lps25h.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="USB Framework" projectFiles="true">
         <itemPath>usb.h</itemPath>
@@ -35,7 +35,7 @@
         <itemPath>time.c</itemPath>
         <itemPath>usb_helpers.c</itemPath>
         <itemPath>i2c.c</itemPath>
-        <itemPath>lis3mdl.c</itemPath>
+        <itemPath>lps25h.c</itemPath>
       </logicalFolder>
       <logicalFolder name="usb" displayName="USB Framework" projectFiles="true">
         <itemPath>usb_device.c</itemPath>

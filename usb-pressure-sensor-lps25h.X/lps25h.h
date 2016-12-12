@@ -56,9 +56,6 @@ typedef struct LPS25H {
     // indicate whether they succeeded.  0 means success, non-zero indicates an
     // error.
     uint8_t lastResult;
-
-    // Raw pressure reading.
-    int24_t p;
 } LPS25H;
 
 // Initializes the library and confirms that we can communicate with the device.
@@ -79,8 +76,12 @@ void lps25hWriteReg(LPS25H *, uint8_t reg, uint8_t value);
 // should be the register address.
 uint8_t lps25hReadReg(LPS25H *, uint8_t reg);
 
-// Reads from the pressure sensor and stores the results in the "p" member of the
-// LPS25H object.
-void lps25hReadPressure(LPS25H *);
+// Reads the pressure and returns the raw 24-bit sensor output.  The units of
+// the returned value are hPa/4096, so you would divide this number by 4096 if
+// you want to get the measurement in hPa or millibars.
+int24_t lps25hReadPressureRaw(LPS25H * this);
+
+// Reads the temperature and returns the raw 16-bit sensor output.
+int16_t lps25hReadTemperatureRaw(LPS25H * this);
 
 #endif

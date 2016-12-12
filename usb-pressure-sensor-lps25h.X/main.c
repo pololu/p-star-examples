@@ -15,7 +15,7 @@
 #include "time.h"
 #include "i2c.h"
 #include "lps25h.h"
-
+;
 LPS25H ps;
 uint8_t psFound;
 
@@ -60,7 +60,7 @@ void interrupt low_priority lowIsr()
 {
 }
 
-void magToUsbService()
+void pressureToUsbService()
 {
     static uint8_t lastUpdateTime = 0;
 
@@ -80,8 +80,15 @@ void magToUsbService()
         return;
     }
 
-    // Try to read sensor data from the pressure sensor.
-    lps25hRead(&ps);
+    // Try to read sensor data.
+    int24_t pressure;
+    int16_t temperature;
+
+    pressure = lps25hReadPressureRaw(&ps);
+    if (ps.lastResult == 0)
+    {
+        temperature = lps25hReadTemperatureRaw(&ps);
+    }
 
     if (ps.lastResult)
     {
@@ -90,7 +97,7 @@ void magToUsbService()
     }
 
     // Send the data to the USB host.  This uses our definition of putchar below.
-    printf("%6d %6d %6d\r\n", ps.p);
+    printf("P: %7ld    T: %6d\r\n", (int32_t)pressure, temperature);
 }
 
 void putch(char data)
@@ -122,6 +129,6 @@ void main(void)
         timeService();
         appUsbService();
         updateLeds();
-        magToUsbService();
+        pressureToUsbService();
     }
 }
