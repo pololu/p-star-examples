@@ -134,7 +134,7 @@ void pressureToUsbService()
     }
 
     // Send the data to the USB host.  This uses our definition of putchar below.
-    printf("P: %8ld %4d mbar %5.2f in    T: %6d %5.2f C %5.2f F\r\n",
+    printf("P: %8ld %5d mbar %6.2f in    T: %6d %6.2f C %6.2f F\r\n",
       (int32_t)pressureRaw, (int16_t)pressureMillibars, pressureInchesHg,
       temperatureRaw, temperatureC, temperatureF);
 }
