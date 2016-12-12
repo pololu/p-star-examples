@@ -10,7 +10,7 @@
 #include <stdint.h>
 
 // This should be called at the beginning of the program.
-void i2cInit();
+void i2cInit(void);
 
 // This struct represents a one-way transfer of data to or from an I2C device.
 typedef struct I2CTransfer {

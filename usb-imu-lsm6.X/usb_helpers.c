@@ -13,7 +13,7 @@ static uint8_t cdcRxBufferLength = 0;
 static uint8_t cdcRxBufferIndex = 0;
 static uint8_t cdcTxBufferLength = 0;
 static uint8_t cdcRxBuffer[CDC_DATA_OUT_EP_SIZE];
-static uint8_t cdcTxBuffer[CDC_DATA_IN_EP_SIZE];
+static uint8_t cdcTxBuffer[128];
 
 static void lineCodingInit()
 {
