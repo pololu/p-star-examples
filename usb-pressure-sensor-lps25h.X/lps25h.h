@@ -76,12 +76,22 @@ void lps25hWriteReg(LPS25H *, uint8_t reg, uint8_t value);
 // should be the register address.
 uint8_t lps25hReadReg(LPS25H *, uint8_t reg);
 
-// Reads the pressure and returns the raw 24-bit sensor output.  The units of
-// the returned value are hPa/4096, so you would divide this number by 4096 if
-// you want to get the measurement in hPa or millibars.
-int24_t lps25hReadPressureRaw(LPS25H * this);
+// Reads the pressure and returns it in millibars, also known as hPa.
+float lps25hReadPressureMillibars(LPS25H *);
+
+// Reads the pressure and returns it in inches of mercury.
+float lps25hReadPressureInchesHg(LPS25H *);
+
+// Reads the pressure and returns the raw 24-bit sensor output.
+int24_t lps25hReadPressureRaw(LPS25H *);
+
+// Reads the temperature and returns it in degrees Celsius.
+float lps25hReadTemperatureC(LPS25H *);
+
+// Reads the temperature and returns it in degrees Fahrenheit.
+float lps25hReadTemperatureF(LPS25H *);
 
 // Reads the temperature and returns the raw 16-bit sensor output.
-int16_t lps25hReadTemperatureRaw(LPS25H * this);
+int16_t lps25hReadTemperatureRaw(LPS25H *);
 
 #endif

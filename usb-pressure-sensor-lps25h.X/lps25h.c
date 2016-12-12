@@ -104,6 +104,16 @@ uint8_t lps25hReadReg(LPS25H * this, uint8_t reg)
     return value;
 }
 
+float lps25hReadPressureMillibars(LPS25H * this)
+{
+    return (float)lps25hReadPressureRaw(this) / 4096;
+}
+
+float lps25hReadPressureInchesHg(LPS25H * this)
+{
+    return (float)lps25hReadPressureRaw(this) / 138706.5;
+}
+
 int24_t lps25hReadPressureRaw(LPS25H * this)
 {
     // Set MSB to 1 to enable register address auto-increment.
@@ -127,6 +137,16 @@ int24_t lps25hReadPressureRaw(LPS25H * this)
         (buffer[0]) |
         (buffer[1] << 8) |
         ((uint24_t)buffer[2] << 16));
+}
+
+float lps25hReadTemperatureC(LPS25H * this)
+{
+    return 42.5 + (float)lps25hReadTemperatureRaw(this) / 480;
+}
+
+float lps25hReadTemperatureF(LPS25H * this)
+{
+    return 108.5 + (float)lps25hReadTemperatureRaw(this) / 480 * 1.8;
 }
 
 int16_t lps25hReadTemperatureRaw(LPS25H * this)

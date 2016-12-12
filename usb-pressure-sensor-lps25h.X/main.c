@@ -69,7 +69,7 @@ void pressureToUsbService()
 
     // If we do not have buffer space available to send data to the USB host,
     // just return.
-    if (cdcTxAvailable() < 64) { return; }
+    if (cdcTxAvailable() < 128) { return; }
 
     lastUpdateTime = (uint8_t)timeMs;
 
@@ -80,14 +80,51 @@ void pressureToUsbService()
         return;
     }
 
-    // Try to read sensor data.
-    int24_t pressure;
-    int16_t temperature;
+    // Try to read pressure and sensor data from the sensor.  This
+    // code shows several different ways to read the pressure and
+    // temperature that give different units.  In a real application,
+    // you would probably pick one of these ways instead of using all
+    // three.
 
-    pressure = lps25hReadPressureRaw(&ps);
-    if (ps.lastResult == 0)
+    uint8_t error = 0;
+
+    // Read pressure and temperature raw values.
+    int24_t pressureRaw;
+    int16_t temperatureRaw;
+    if (error == 0)
     {
-        temperature = lps25hReadTemperatureRaw(&ps);
+        pressureRaw = lps25hReadPressureRaw(&ps);
+        error = ps.lastResult;
+    }
+    if (error == 0)
+    {
+        temperatureRaw = lps25hReadTemperatureRaw(&ps);
+        error = ps.lastResult;
+    }
+
+    // Read pressure and temperature using metric units (millibars, degrees C).
+    float pressureMillibars, temperatureC;
+    if (error == 0)
+    {
+        pressureMillibars = lps25hReadPressureMillibars(&ps);
+        error = ps.lastResult;
+    }
+    if (error == 0)
+    {
+        temperatureC = lps25hReadTemperatureC(&ps);
+        error = ps.lastResult;
+    }
+
+    // Read pressure and temperature using US units (inches of mercury, degrees F).
+    float pressureInchesHg, temperatureF;
+    if (error == 0)
+    {
+        pressureInchesHg = lps25hReadPressureInchesHg(&ps);
+        error = ps.lastResult;
+    }
+    if (error == 0)
+    {
+        temperatureF = lps25hReadTemperatureF(&ps);
     }
 
     if (ps.lastResult)
@@ -97,7 +134,9 @@ void pressureToUsbService()
     }
 
     // Send the data to the USB host.  This uses our definition of putchar below.
-    printf("P: %7ld    T: %6d\r\n", (int32_t)pressure, temperature);
+    printf("P: %8ld %4d mbar %5.2f in    T: %6d %5.2f C %5.2f F\r\n",
+      (int32_t)pressureRaw, (int16_t)pressureMillibars, pressureInchesHg,
+      temperatureRaw, temperatureC, temperatureF);
 }
 
 void putch(char data)
