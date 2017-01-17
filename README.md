@@ -11,6 +11,9 @@ compiled using either the [MPLAB XPress IDE][xpressinfo], an online IDE from
 Microchip that does not require any software installation, or the [MPLAB X
 IDE][x], a more powerful IDE that is installed on your computer.
 
+Each example comes with a `README.md` file that explains what it does and how to
+use it.
+
 
 ## Compiling examples with the MPLAB XPress IDE
 
