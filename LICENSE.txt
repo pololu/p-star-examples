@@ -5,7 +5,7 @@ for those files, see the license at the top of each file.
 For the files that are copyrighted by Pololu Corporation, the
 license below applies:
 
-Copyright (c) 2016 Pololu Corporation.  For more information, see
+Copyright (c) 2016-2017 Pololu Corporation.  For more information, see
 
 http://www.pololu.com/
 http://forum.pololu.com/
