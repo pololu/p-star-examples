@@ -31,7 +31,7 @@ the example you want to run, and make a new ZIP file that just contains that
 folder.  Next, start the MPLAB XPress IDE by opening [this link][xpressrun].  In
 the IDE's "File" menu, select "Import Project" and upload the new ZIP file.
 
-Once you have succeeeded in opening the project in the MPLAB XPress IDE, you
+Once you have succeeded in opening the project in the MPLAB XPress IDE, you
 should see some source code on the right side of your browser window, and you
 should see the "Project" pane on the left side, which shows all the source and
 header files in the project.
