@@ -7,10 +7,6 @@
 #include "apa102c.h"
 #include "apa102c_config.h"
 
-#if _XTAL_FREQ != 48000000
-#error This code assumes that the PIC is running at 48 MHz.
-#endif
-
 void apa102c_write(rgb_color * colors, uint16_t count, uint8_t brightness)
 {
     apa102c_start_frame();
