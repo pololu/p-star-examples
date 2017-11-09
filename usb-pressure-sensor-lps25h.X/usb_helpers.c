@@ -25,14 +25,25 @@ static void lineCodingInit()
 
 static void usbPowerSenseInit()
 {
-    // We use pin RA0 to detect whether USB power is present or not,
-    // so we need to enable its digital input buffer.
+    // Enable the digital input buffer on the pin we use for detecting USB power.
+#if defined(__18F25K50)
     ANSELAbits.ANSA0 = 0;
+#elif defined(__18F45K50)
+    ANSELEbits.ANSE2 = 0;
+#else
+#error
+#endif
 }
 
 bit usbPowerPresent()
 {
+#if defined(__18F25K50)
     return PORTAbits.RA0;
+#elif defined(__18F45K50)
+    return PORTEbits.RE2;
+#else
+#error
+#endif
 }
 
 void appUsbInit()
