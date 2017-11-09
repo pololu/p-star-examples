@@ -4,3 +4,5 @@ dist
 /*/nbproject/*
 !/*/nbproject/*.xml
 *.zip
+funclist
+l.obj
