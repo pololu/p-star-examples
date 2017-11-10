@@ -9,6 +9,7 @@ require 'securerandom'
 
 LibraryHeaders = %w{
   apa102c.h
+  i2c.h
   leds.h
   lis3mdl.h
   lps25h.h
@@ -16,36 +17,38 @@ LibraryHeaders = %w{
   system.h
   time.h
   uart.h
-  usb_helpers.h
   ws2812b.h
 }
 
 LibrarySrc = %w{
   apa102c.c
+  i2c.c
   lis3mdl.c
   lps25h.c
   lsm6.c
   time.c
   uart.c
-  usb_helpers.c
-  usb_descriptors.c
   ws2812b.c
 }
 
 UsbHeaders = %w{
   usb.h
   usb_ch9.h
+  usb_config.h
   usb_common.h
   usb_device.h
   usb_device_cdc.h
   usb_device_local.h
   usb_hal.h
   usb_hal_pic18.h
+  usb_helpers.h
 }
 
 UsbSrc = %w{
   usb_device.c
   usb_device_cdc.c
+  usb_descriptors.c
+  usb_helpers.c
 }
 
 class LogicalFolder
