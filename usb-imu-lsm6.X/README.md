@@ -1,14 +1,14 @@
-# USB Accelerometer/Gyro example for the LSM6DS33 and P-Star 25K50
+# USB Accelerometer/Gyro example for the LSM6DS33 and P-Star
 
 ## Summary
 
-This example code for the [P-Star 25K50 Micro][pstar25m] reads the raw values
+This example code for the P-Star reads the raw values
 from the accelerometer and gyro on the LSM6DS33.  The values are formatted as
 ASCII text and sent to the P-Star's USB virtual COM port, so they can be viewed
 in a standard terminal program and can be read from other software.
 
 This example uses the [Microchip USB Stack][mla] to implement a USB device that
-has one USB CDC ACM virtual serial port, and it uses the PIC18F25K50's I²C
+has one USB CDC ACM virtual serial port, and it uses the PIC's I²C
 module to communicate with the LSM6DS33.
 
 
@@ -49,7 +49,7 @@ P-Star's RB1 pin to the carrier's SCL pin.
 
 ## Description
 
-After you write this example to a P-Star 25K50, the P-Star will appear to the
+After you write this example to a P-Star, the P-Star will appear to the
 computer as a USB device that has one USB CDC ACM virtual serial port, using the
 Pololu Corporation vendor ID.
 
@@ -130,5 +130,4 @@ Applications (MLA)][mla] v2016_08_08:
 - usb_hal.h
 - usb_hal_pic18.h
 
-[pstar25m]: https://www.pololu.com/product/3150
 [mla]: http://www.microchip.com/mplab/microchip-libraries-for-applications

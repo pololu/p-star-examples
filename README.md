@@ -1,12 +1,12 @@
 # P-Star Examples
 
-This repository contains example code for the [P-Star 25K50 Micro][pstar25m].
+This repository contains example code for the [P-Star 25K50 Micro][pstar25m] and
+[P-Star 45K50 Mini SV][pstar45msv].
 To use these examples, you will need a P-Star, a [Micro-USB
 cable](https://www.pololu.com/product/2073), and a computer running Windows,
 Linux, or Mac OS X.
 
-The [P-Star 25K50 Micro][pstar25m] is a tiny programmable module featuring
-Microchip's PIC18F25K50 microcontroller.  The examples in this repository can be
+The examples in this repository can be
 compiled using either the [MPLAB XPress IDE][xpressinfo], an online IDE from
 Microchip that does not require any software installation, or the [MPLAB X
 IDE][x], a more powerful IDE that is installed on your computer.
@@ -61,12 +61,19 @@ Once you have opened the project in the MPLAB X IDE, you should see it listed in
 the "Project" pane on the left side of the IDE, which shows all the source and
 headers files in the project.
 
-From the "Run" menu, select "Build Project".  The IDE will compile the source
+Right-click on the project and select "Set as Main Project".
+
+From the "Production" menu, set the project configuration to either
+"P-Star_25K50" or "P-Star_45K50", depending on what type of P-Star you are
+using.
+
+From the "Production" menu, select "Build Project".  The IDE will compile the source
 code into a HEX file.  You can find the HEX file and the other outputs of the
 compiler in the project folder under the "dist" subdirectory.
 
 
 [pstar25m]: https://www.pololu.com/product/3150
+[pstar45msv]: https://www.pololu.com/product/3156
 [xpressinfo]: http://www.microchip.com/mplab/mplab-xpress
 [xpressrun]: https://mplabxpress.microchip.com/mplabcloud/ide
 [x]: http://www.microchip.com/mplab/mplab-x-ide

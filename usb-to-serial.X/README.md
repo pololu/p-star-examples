@@ -1,12 +1,12 @@
-# USB-to-Serial Adapter Example for the P-Star 25K50
+# USB-to-Serial Adapter Example for the P-Star
 
 ## Summary
 
-This example shows how you can program a [P-Star 25K50 Micro][pstar25m] to be a
+This example shows how you can program a P-Star to be a
 USB-to-Serial adapter that is capable of baud rates from 300 bps to 115200 bps.
 
 This example uses the [Microchip USB Stack][mla] to implement a USB device that
-has one USB CDC ACM virtual serial port, and it uses the PIC18F25K50's UART to
+has one USB CDC ACM virtual serial port, and it uses the PIC's UART to
 send and receive serial data.
 
 
@@ -35,7 +35,7 @@ example and writing it to the P-Star.
 
 ## Description
 
-After you write this example to a P-Star 25K50, the P-Star will appear to the
+After you write this example to a P-Star, the P-Star will appear to the
 computer as a USB device that has one USB CDC ACM virtual serial port, using the
 Pololu Corporation vendor ID.
 
@@ -66,7 +66,7 @@ sent on the TX line and be off otherwise.
 
 ## Caveats
 
-The RX/RC7 line of the P-Star 25K50 does not have an internal pull-up resistor,
+The RX/RC7 line of the P-Star does not have an internal pull-up resistor,
 so you could receive invalid data when the RX line is not connected.  We
 recommend connecting a 10 kilohm resistor between RC7 and VDD.
 
@@ -118,5 +118,4 @@ Applications (MLA)][mla] v2016_08_08:
 - usb_hal.h
 - usb_hal_pic18.h
 
-[pstar25m]: https://www.pololu.com/product/3150
 [mla]: http://www.microchip.com/mplab/microchip-libraries-for-applications

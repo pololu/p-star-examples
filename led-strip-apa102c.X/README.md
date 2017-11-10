@@ -1,8 +1,8 @@
-# APA102C LED Strip Example for the P-Star 25K50
+# APA102C LED Strip Example for the P-Star
 
 ## Summary
 
-This example shows how you can program a [P-Star 25K50 Micro][pstar25m] to
+This example shows how you can program a P-Star to
 control an LED strip based on the [APA102C addressable RGB LEDs][cat].
 
 
@@ -52,5 +52,4 @@ applications:
 
 The file apa102c_config.h defines what PIC pins to use for the LED strip.
 
-[pstar25m]: https://www.pololu.com/product/3150
 [cat]: https://www.pololu.com/category/181

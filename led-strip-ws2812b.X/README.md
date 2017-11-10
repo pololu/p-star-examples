@@ -1,8 +1,8 @@
-# WS2812B/SK6812 LED Strip Example for the P-Star 25K50
+# WS2812B/SK6812 LED Strip Example for the P-Star
 
 ## Summary
 
-This example shows how you can program a [P-Star 25K50 Micro][pstar25m] to
+This example shows how you can program a P-Star to
 control an LED strip based on the [SK6812/WS281x addressable RGB LEDs][cat].
 
 This example disables interrupts and uses PIC18 assembly code to ensure that the
@@ -56,5 +56,4 @@ applications:
 
 The file ws2812b_config.h defines what PIC pin to use for the LED strip.
 
-[pstar25m]: https://www.pololu.com/product/3150
 [cat]: https://www.pololu.com/category/151
