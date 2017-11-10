@@ -36,6 +36,10 @@ should see some source code on the right side of your browser window, and you
 should see the "Project" pane on the left side, which shows all the source and
 header files in the project.
 
+Open the "File" menu and select "Project Properties".  In the "Device" field,
+enter either "PIC18F25K50" or "PIC18F45K50" depending on which microcontroller
+is on your P-Star, and then click "Ok".
+
 Click the "Make and Program Device" button (the button with a green arrow
 pointing down).  This will cause the IDE to compile the program and then
 download it to your computer as a HEX file.
