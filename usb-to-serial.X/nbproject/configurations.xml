@@ -28,10 +28,10 @@
     </logicalFolder>
     <logicalFolder name="SourceFiles" displayName="Source Files" projectFiles="true">
       <itemPath>main.c</itemPath>
-      <itemPath>usb_descriptors.c</itemPath>
       <logicalFolder name="f1" displayName="Libraries" projectFiles="true">
         <itemPath>time.c</itemPath>
         <itemPath>uart.c</itemPath>
+        <itemPath>usb_descriptors.c</itemPath>
         <itemPath>usb_helpers.c</itemPath>
       </logicalFolder>
       <logicalFolder name="usb" displayName="USB Framework" projectFiles="true">

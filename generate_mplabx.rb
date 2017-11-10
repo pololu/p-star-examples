@@ -10,17 +10,26 @@ require 'securerandom'
 LibraryHeaders = %w{
   apa102c.h
   leds.h
+  lis3mdl.h
+  lps25h.h
+  lsm6.h
   system.h
   time.h
   uart.h
   usb_helpers.h
+  ws2812b.h
 }
 
 LibrarySrc = %w{
   apa102c.c
+  lis3mdl.c
+  lps25h.c
+  lsm6.c
   time.c
   uart.c
   usb_helpers.c
+  usb_descriptors.c
+  ws2812b.c
 }
 
 UsbHeaders = %w{
