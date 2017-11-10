@@ -140,6 +140,7 @@ def get_logical_file_structure(project_dir)
     end
   end
 
+  root << important
   root << headers
   headers << library_headers if !library_headers.empty?
   headers << usb_headers if !usb_headers.empty?
@@ -147,7 +148,6 @@ def get_logical_file_structure(project_dir)
   root << src
   src << library_src if !library_src.empty?
   src << usb_src if !usb_src.empty?
-  root << important
 
   root
 end
