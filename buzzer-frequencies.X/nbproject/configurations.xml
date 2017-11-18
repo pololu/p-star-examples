@@ -5,6 +5,7 @@
                    displayName="Header Files"
                    projectFiles="true">
       <logicalFolder name="f2" displayName="Libraries" projectFiles="true">
+        <itemPath>buzzer.h</itemPath>
         <itemPath>system.h</itemPath>
         <itemPath>time.h</itemPath>
       </logicalFolder>
@@ -22,6 +23,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f1" displayName="Libraries" projectFiles="true">
+        <itemPath>buzzer.c</itemPath>
         <itemPath>time.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
@@ -40,7 +42,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>Simulator</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion></languageToolchainVersion>
+        <languageToolchainVersion>1.33</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>
@@ -83,7 +85,7 @@
         <targetPluginBoard></targetPluginBoard>
         <platformTool>Simulator</platformTool>
         <languageToolchain>XC8</languageToolchain>
-        <languageToolchainVersion></languageToolchainVersion>
+        <languageToolchainVersion>1.33</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <compileType>

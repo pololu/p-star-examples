@@ -9,6 +9,7 @@ require 'securerandom'
 
 LibraryHeaders = %w{
   apa102c.h
+  buzzer.h
   i2c.h
   leds.h
   lis3mdl.h
@@ -22,6 +23,7 @@ LibraryHeaders = %w{
 
 LibrarySrc = %w{
   apa102c.c
+  buzzer.c
   i2c.c
   lis3mdl.c
   lps25h.c
