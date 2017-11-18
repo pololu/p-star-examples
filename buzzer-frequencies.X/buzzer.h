@@ -2,6 +2,9 @@
 
 // This header file defines the interface for buzzer.c, a library that lets you
 // use Timer 3 and the CCP2 module to play simple beeps on pin RC1/CCP2.
+//
+// While the buzzer is not playing, you can use Timer 3 and CCP2 for other
+// things.
 
 #ifndef _BUZZER_H
 #define _BUZZER_H
