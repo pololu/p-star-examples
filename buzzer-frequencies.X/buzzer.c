@@ -19,10 +19,10 @@ void buzzerIsr()
         // Clear the interrupt flag.
         CCP2IF = 0;
 
-        // Switch from clear-on-match mode to set-on-match mode.
+        // Toggle between clear-on-match mode and set-on-match mode.
         CCP2M0 ^= 1;
 
-        // Schedule the next compare match for one half period from now.
+        // Schedule the next match for one half period from now.
         CCPR2 += buzzerHalfPeriod;
     }
 }
