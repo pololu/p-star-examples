@@ -1,8 +1,8 @@
-# Buzzer Frequencies Example for the P-Star
+# Buzzer Beep Example for the P-Star
 
 ## Summary
 
-This example shows how you can program a P-Star to play simple notes on a
+This example shows how you can program a P-Star to play simple beeps on a
 buzzer.  It uses Timer 3, CCP2 in compare mode, the RC1/CCP2 pin, and a
 low-priority interrupt.
 
