@@ -39,7 +39,6 @@ void buzzerIsr()
         // Clear the interrupt flag.
         CCP2IF = 0;
 
-        // Toggle between clear-on-match mode and set-on-match mode.
         if (CCP2M0)
         {
             // The match that just happened caused us to clear the output.
