@@ -149,7 +149,7 @@ void buzzerStop()
     buzzerRunning = 0;
 }
 
-void buzzerPlayTone(uint16_t halfPeriod, uint16_t timeout)
+void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout)
 {
     buzzerStart();
 

@@ -3,8 +3,8 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>buzzer-frequencies</name>
-            <creation-uuid>ca1fdcc9-1769-4094-98e2-8564a152ebe3</creation-uuid>
+            <name>buzzer-beep</name>
+            <creation-uuid>b4a826a2-37b1-45cb-985a-885bd53d2735</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
             <cpp-extensions/>

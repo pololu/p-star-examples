@@ -32,7 +32,7 @@ void buzzerIsr();
 // period of 1 ms and a half period of 500 us.  Therefore you would set the half
 // period to 500*12 = 6000.  If you want it to play for 250 ms, tone that the
 // period is 1 ms, and set the timeout to (250 ms) / (1 ms) = 250.
-void buzzerPlayTone(uint16_t halfPeriod, uint16_t timeout);
+void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout);
 
 void buzzerStop();
 
