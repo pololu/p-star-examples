@@ -10,7 +10,27 @@ volatile uint8_t buzzerRunning = 0;
 
 // If the buzzer is running, this is the current half period of the frequency we
 // are playing on the buzzer.
-volatile uint16_t buzzerHalfPeriod;
+volatile uint16_t buzzerCurrentHalfPeriod;
+
+// 0 - the next note is not ready
+// 1 - the next note is ready, start it when the current note finishes
+// 2 - the next note is ready, start as soon as possible
+volatile uint8_t buzzerNextNoteState = 0;
+
+volatile uint16_t buzzerNextHalfPeriod;
+
+void buzzerIsrStartNextNoteIfNeeded()
+{
+    if (buzzerNextNoteState == 2)
+    {
+        buzzerNextNoteState = 0;
+        buzzerCurrentHalfPeriod = buzzerNextHalfPeriod;
+    }
+    else
+    {
+        // Keep performing the current note.
+    }
+}
 
 void buzzerIsr()
 {
@@ -20,16 +40,45 @@ void buzzerIsr()
         CCP2IF = 0;
 
         // Toggle between clear-on-match mode and set-on-match mode.
-        CCP2M0 ^= 1;
+        if (CCP2M0)
+        {
+            // The match that just happened caused us to clear the output.
+            // So we just finished a pulse for a note, and we should consider
+            // starting the next note.
 
-        // Schedule the next match for one half period from now.
-        CCPR2 += buzzerHalfPeriod;
+            buzzerIsrStartNextNoteIfNeeded();
+
+            if (buzzerCurrentHalfPeriod == 0)
+            {
+                // This is a silent note.  Just schedule the next
+                // match and interrupt for 1 ms from now.
+                CCPR2 = 12000;
+            }
+            else
+            {
+                // Schedule the next match and interrupt and make it be a falling
+                // edge.
+                CCP2M0 = 0;
+                CCPR2 += buzzerCurrentHalfPeriod;
+            }
+        }
+        else
+        {
+            // The match that just happened caused the output to get set.
+            // Don't change the period and set up the next match to clear the
+            // output.
+            CCP2M0 = 1;
+            CCPR2 += buzzerCurrentHalfPeriod;
+        }
     }
 }
 
 void buzzerStart()
 {
     if (buzzerRunning) { return; }
+
+    buzzerNextNoteState = 0;
+    buzzerCurrentHalfPeriod = 0;
 
     // Make RC1 be an output and drive low by default when CCP2 is not
     // connected.
@@ -75,11 +124,7 @@ void buzzerStop()
 
 void buzzerSetPeriod(uint16_t halfPeriod)
 {
-    if (halfPeriod == 0)
-    {
-        buzzerStop();
-        return;
-    }
+    buzzerStart();
 
     // Force the half period to be at least 100 us, so the maximum frequency is
     // 5 kHz.  We can't make the half period too small, or else, the interrupts
@@ -87,20 +132,12 @@ void buzzerSetPeriod(uint16_t halfPeriod)
     // resulting in a bad waveform.  It would also be possible for the
     // interrupts to take up all of the CPU time, preventing the P-Star from
     // doing anything in its main loop.
-    if (halfPeriod < 1200)
+    if (halfPeriod && halfPeriod < 1200)
     {
         halfPeriod = 1200;
     }
 
-    if (buzzerRunning)
-    {
-        CCP2IE = 0;
-        buzzerHalfPeriod = halfPeriod;
-        CCP2IE = 1;
-    }
-    else
-    {
-        buzzerHalfPeriod = halfPeriod;
-        buzzerStart();
-    }
+    buzzerNextNoteState = 0;
+    buzzerNextHalfPeriod = halfPeriod;
+    buzzerNextNoteState = 2;
 }
