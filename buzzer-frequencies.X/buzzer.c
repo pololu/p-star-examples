@@ -76,8 +76,9 @@ void buzzerStart()
 {
     if (buzzerRunning) { return; }
 
-    buzzerNextNoteState = 0;
+    buzzerRunning = 1;
     buzzerCurrentHalfPeriod = 0;
+    buzzerNextNoteState = 0;
 
     // Make RC1 be an output and drive low by default when CCP2 is not
     // connected.
@@ -107,8 +108,6 @@ void buzzerStart()
     CCP2IP = 0;
     CCP2IF = 0;
     CCP2IE = 1;
-
-    buzzerRunning = 0xFF;
 }
 
 void buzzerStop()
