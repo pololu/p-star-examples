@@ -14,49 +14,49 @@ volatile uint16_t buzzerHalfPeriod;
 
 volatile uint16_t buzzerTimeout;
 
-// 0 - the next note is not ready
-// 1 - the next note is ready, start it when the current note finishes
-// 2 - the next note is ready, start as soon as possible
-volatile uint8_t buzzerNextNoteState = 0;
+// 0 - the next tone is not ready
+// 1 - the next tone is ready, start it when the current tone finishes
+// 2 - the next tone is ready, start as soon as possible
+volatile uint8_t buzzerNextToneState = 0;
 
 volatile uint16_t buzzerNextHalfPeriod;
 volatile uint16_t buzzerNextTimeout;
 
-void buzzerIsrStartNextNoteIfNeeded()
+void buzzerIsrStartNextToneIfNeeded()
 {
     if (buzzerTimeout)
     {
         buzzerTimeout--;
     }
 
-    if (buzzerNextNoteState == 2)
+    if (buzzerNextToneState == 2)
     {
-        buzzerNextNoteState = 0;
+        buzzerNextToneState = 0;
         buzzerHalfPeriod = buzzerNextHalfPeriod;
         buzzerTimeout = buzzerNextTimeout;
     }
     else if (buzzerTimeout == 0)
     {
-        // The current note has expired.
+        // The current tone has expired.
 
-        if (buzzerNextNoteState == 1)
+        if (buzzerNextToneState == 1)
         {
-            // The next note is ready, so start playing it.
-            buzzerNextNoteState = 0;
+            // The next tone is ready, so start playing it.
+            buzzerNextToneState = 0;
             buzzerHalfPeriod = buzzerNextHalfPeriod;
             buzzerTimeout = buzzerNextTimeout;
         }
         else
         {
-            // The next note is not ready, so just stay silent for now.  We'll
+            // The next tone is not ready, so just stay silent for now.  We'll
             // leave buzzerTimeout set to 0, so we'll reach this code again in 1
-            // ms and check for a new note.
+            // ms and check for a new tone.
             buzzerHalfPeriod = 0;
         }
     }
     else
     {
-        // Keep performing the current note.
+        // Keep performing the current tone.
     }
 }
 
@@ -70,14 +70,14 @@ void buzzerIsr()
         if (CCP2M0)
         {
             // The match that just happened caused us to clear the output.
-            // So we just finished a pulse for a note, and we should consider
-            // starting the next note.
+            // So we just finished a pulse for a tone, and we should consider
+            // starting the next tone.
 
-            buzzerIsrStartNextNoteIfNeeded();
+            buzzerIsrStartNextToneIfNeeded();
 
             if (buzzerHalfPeriod == 0)
             {
-                // This is a silent note.  Just schedule the next
+                // This is a silent tone.  Just schedule the next
                 // match and interrupt for 1 ms from now.
                 CCPR2 = 12000;
             }
@@ -107,7 +107,7 @@ void buzzerStart()
     buzzerRunning = 1;
     buzzerHalfPeriod = 0;
     buzzerTimeout = 0;
-    buzzerNextNoteState = 0;
+    buzzerNextToneState = 0;
 
     // Make RC1 be an output and drive low by default when CCP2 is not
     // connected.
@@ -149,7 +149,7 @@ void buzzerStop()
     buzzerRunning = 0;
 }
 
-void buzzerSetNote(uint16_t halfPeriod, uint16_t timeout)
+void buzzerPlayTone(uint16_t halfPeriod, uint16_t timeout)
 {
     buzzerStart();
 
@@ -164,8 +164,8 @@ void buzzerSetNote(uint16_t halfPeriod, uint16_t timeout)
         halfPeriod = 1200;
     }
 
-    buzzerNextNoteState = 0;
+    buzzerNextToneState = 0;
     buzzerNextHalfPeriod = halfPeriod;
     buzzerNextTimeout = timeout;
-    buzzerNextNoteState = 2;
+    buzzerNextToneState = 2;
 }
