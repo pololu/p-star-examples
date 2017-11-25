@@ -3,8 +3,8 @@
 ## Summary
 
 This example shows how you can program a P-Star to play simple beeps on a
-buzzer.  It uses Timer 3, CCP2 in compare mode, the RC1/CCP2 pin, and a
-low-priority interrupt.
+buzzer.  It uses Timer 3, the CCP2 module in compare mode, the RC1/CCP2 pin, and
+a low-priority interrupt.
 
 
 ## Getting started
