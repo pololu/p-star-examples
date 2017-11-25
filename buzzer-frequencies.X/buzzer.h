@@ -14,17 +14,25 @@
 // You should call this in your low-priority ISR.
 void buzzerIsr();
 
-// Tells the buzzer to start running and play a note with the specified half
-// period in units of 1/12 us.
+// Tells the buzzer to play a note.
 //
-// For example, to get a frequency of 1 kHz, you would want a period of 1 ms
-// and a half period of 500 us.  Therefore you would set the half period to
-// 500*12 = 6000.
+// This function initializing the buzzer library if necessary, and interrupts
+// and note that is currently being played on the buzzer.
 //
-// If the half period is 0, this is equivalent to buzzerStop().
-// Otherwise, the half period should be between 1200 and 65535.
-// Half periods from 1 to 1199 are equivalent to 1200.
-void buzzerSetPeriod(uint16_t halfPeriod);
+// halfPeriod is one half of the period of note, in units of 1/12 us.  The
+// period is the reciprocal of the frequency.  A halfPeriod is 0 is a special
+// value indicating that the next note should be silent, and have a full period
+// of 1 ms for the purposes of the timeout calculation.  If the halfPeriod is
+// between 1 and 1199, this function changes it to 1200 to ensure that this
+// library's ISRs do not run too often).
+//
+// The timeout is how long the note should be, in units of full periods.
+//
+// For example, to play a note with a frequency of 1 kHz, you would want a
+// period of 1 ms and a half period of 500 us.  Therefore you would set the half
+// period to 500*12 = 6000.  If you want it to play for 250 ms, note that the
+// period is 1 ms, and set the timeout to (250 ms) / (1 ms) = 250.
+void buzzerSetNote(uint16_t halfPeriod, uint16_t timeout);
 
 void buzzerStop();
 

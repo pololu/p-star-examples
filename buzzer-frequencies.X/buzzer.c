@@ -10,7 +10,9 @@ volatile uint8_t buzzerRunning = 0;
 
 // If the buzzer is running, this is the current half period of the frequency we
 // are playing on the buzzer.
-volatile uint16_t buzzerCurrentHalfPeriod;
+volatile uint16_t buzzerHalfPeriod;
+
+volatile uint16_t buzzerTimeout;
 
 // 0 - the next note is not ready
 // 1 - the next note is ready, start it when the current note finishes
@@ -18,13 +20,39 @@ volatile uint16_t buzzerCurrentHalfPeriod;
 volatile uint8_t buzzerNextNoteState = 0;
 
 volatile uint16_t buzzerNextHalfPeriod;
+volatile uint16_t buzzerNextTimeout;
 
 void buzzerIsrStartNextNoteIfNeeded()
 {
+    if (buzzerTimeout)
+    {
+        buzzerTimeout--;
+    }
+
     if (buzzerNextNoteState == 2)
     {
         buzzerNextNoteState = 0;
-        buzzerCurrentHalfPeriod = buzzerNextHalfPeriod;
+        buzzerHalfPeriod = buzzerNextHalfPeriod;
+        buzzerTimeout = buzzerNextTimeout;
+    }
+    else if (buzzerTimeout == 0)
+    {
+        // The current note has expired.
+
+        if (buzzerNextNoteState == 1)
+        {
+            // The next note is ready, so start playing it.
+            buzzerNextNoteState = 0;
+            buzzerHalfPeriod = buzzerNextHalfPeriod;
+            buzzerTimeout = buzzerNextTimeout;
+        }
+        else
+        {
+            // The next note is not ready, so just stay silent for now.  We'll
+            // leave buzzerTimeout set to 0, so we'll reach this code again in 1
+            // ms and check for a new note.
+            buzzerHalfPeriod = 0;
+        }
     }
     else
     {
@@ -47,7 +75,7 @@ void buzzerIsr()
 
             buzzerIsrStartNextNoteIfNeeded();
 
-            if (buzzerCurrentHalfPeriod == 0)
+            if (buzzerHalfPeriod == 0)
             {
                 // This is a silent note.  Just schedule the next
                 // match and interrupt for 1 ms from now.
@@ -58,7 +86,7 @@ void buzzerIsr()
                 // Schedule the next match and interrupt and make it be a falling
                 // edge.
                 CCP2M0 = 0;
-                CCPR2 += buzzerCurrentHalfPeriod;
+                CCPR2 += buzzerHalfPeriod;
             }
         }
         else
@@ -67,7 +95,7 @@ void buzzerIsr()
             // Don't change the period and set up the next match to clear the
             // output.
             CCP2M0 = 1;
-            CCPR2 += buzzerCurrentHalfPeriod;
+            CCPR2 += buzzerHalfPeriod;
         }
     }
 }
@@ -77,7 +105,8 @@ void buzzerStart()
     if (buzzerRunning) { return; }
 
     buzzerRunning = 1;
-    buzzerCurrentHalfPeriod = 0;
+    buzzerHalfPeriod = 0;
+    buzzerTimeout = 0;
     buzzerNextNoteState = 0;
 
     // Make RC1 be an output and drive low by default when CCP2 is not
@@ -120,7 +149,7 @@ void buzzerStop()
     buzzerRunning = 0;
 }
 
-void buzzerSetPeriod(uint16_t halfPeriod)
+void buzzerSetNote(uint16_t halfPeriod, uint16_t timeout)
 {
     buzzerStart();
 
@@ -137,5 +166,6 @@ void buzzerSetPeriod(uint16_t halfPeriod)
 
     buzzerNextNoteState = 0;
     buzzerNextHalfPeriod = halfPeriod;
+    buzzerNextTimeout = timeout;
     buzzerNextNoteState = 2;
 }
