@@ -3,13 +3,7 @@
 #include "buzzer.h"
 #include <xc.h>
 
-// This is non-zero if this buzzer library has configured its peripherals.
-volatile uint8_t buzzerInitialized = 0;
-
-// Note that we use CCP2IE as another important state variable.
-// If CCP2IE is 1, it implies that Timer 3 is running and we are playing
-// a note (or silence) commanded by the user.
-// If CCP2IE is 0, it implies the opposite.
+volatile uint8_t buzzerRunning = 0;
 
 // If the buzzer is running, this is the current half period of the frequency we
 // are playing on the buzzer.
@@ -17,69 +11,56 @@ volatile uint16_t buzzerHalfPeriod;
 
 volatile uint16_t buzzerTimeout;
 
-// 0 - the next tone is not ready
-// 1 - the next tone is ready, start it when the current tone finishes
-// 2 - the next tone is ready, start as soon as possible
-volatile uint8_t buzzerNextToneState = 0;
+#define BUZZER_NEXT_TONE_NOT_READY 0
+#define BUZZER_NEXT_TONE_READY 1
+#define BUZZER_NEXT_TONE_ASAP 2
+volatile uint8_t buzzerNextToneState = BUZZER_NEXT_TONE_NOT_READY;
 
 volatile uint16_t buzzerNextHalfPeriod;
 volatile uint16_t buzzerNextTimeout;
 
-void buzzerIsrStartNextToneIfNeeded()
+// This function is called frequently by the ISR to decide whether to keep
+// playing the current tone, play the next tone, or stop.  It sets
+// buzzerHalfPeriod and buzzerTimeout to indicate its decision.  If
+// buzzerTimeout is 0, it means that the decision is to stop playing.
+void buzzerIsrDecideNextTone()
 {
     if (buzzerTimeout)
     {
         buzzerTimeout--;
     }
 
-    if (buzzerNextToneState == 2)
+    if (buzzerNextToneState == BUZZER_NEXT_TONE_ASAP ||
+        (buzzerTimeout == 0 && buzzerNextToneState))
     {
         buzzerNextToneState = 0;
         buzzerHalfPeriod = buzzerNextHalfPeriod;
         buzzerTimeout = buzzerNextTimeout;
     }
-    else if (buzzerTimeout == 0)
-    {
-        // The current tone has expired.
-
-        if (buzzerNextToneState == 1)
-        {
-            // The next tone is ready, so start playing it.
-            buzzerNextToneState = 0;
-            buzzerHalfPeriod = buzzerNextHalfPeriod;
-            buzzerTimeout = buzzerNextTimeout;
-        }
-        else
-        {
-            // The next tone is not ready, so stop the buzzer.
-        }
-    }
-    else
-    {
-        // Keep performing the current tone.
-    }
 }
 
 void buzzerIsr()
 {
-    if (buzzerInitialized && CCP2IE && CCP2IF)
+    if (buzzerRunning && CCP2IE && CCP2IF)
     {
         // Clear the interrupt flag.
         CCP2IF = 0;
 
         if (CCP2M0)
         {
-            // The match that just happened caused us to clear the output.
-            // So we just finished a pulse for a tone, and we should consider
-            // starting the next tone.
+            // The match that just happened caused us to clear the output.  So
+            // we just finished a pulse for a tone (or we just started running),
+            // and we should consider starting the next tone.
 
-            buzzerIsrStartNextToneIfNeeded();
+            buzzerIsrDecideNextTone();
 
             if (buzzerTimeout == 0)
             {
                 // Stop the buzzer.
                 CCP2IE = 0;
                 TMR3ON = 0;
+                CCP2CON = 0;
+                buzzerRunning = 0;
             }
             else if (buzzerHalfPeriod == 0)
             {
@@ -89,29 +70,28 @@ void buzzerIsr()
             }
             else
             {
-                // Schedule the next match and interrupt and make it be a falling
-                // edge.
+                // Schedule the next match and make it set the CCP2 output.
                 CCP2M0 = 0;
                 CCPR2 += buzzerHalfPeriod;
             }
         }
         else
         {
-            // The match that just happened caused the output to get set.
-            // Don't change the period and set up the next match to clear the
-            // output.
+            // The match that just happened caused the output to get set.  Don't
+            // change the period and set up the next match and make it clear the
+            // CCP2 output.
             CCP2M0 = 1;
             CCPR2 += buzzerHalfPeriod;
         }
     }
 }
 
-void buzzerInit()
+// Make sure to set buzzerNextToneState properly before calling this.
+static void buzzerStartRunning()
 {
-    if (buzzerInitialized) { return; }
+    if (buzzerRunning) { return; }
 
-    buzzerInitialized = 1;
-    buzzerNextToneState = 0;
+    buzzerRunning = 1;
 
     // Make RC1 be an output and drive low by default when CCP2 is not
     // connected.
@@ -126,13 +106,6 @@ void buzzerInit()
 
     // CCP2 interrupt priority: low.
     CCP2IP = 0;
-}
-
-static void buzzerStartRunning()
-{
-    buzzerInit();
-
-    if (CCP2IE) { return; }
 
     buzzerHalfPeriod = 0;
     buzzerTimeout = 0;
@@ -156,17 +129,23 @@ static void buzzerStartRunning()
 
 void buzzerStop()
 {
-    buzzerPlayRawTone(0, 1);
-}
-
-void buzzerDeinit()
-{
-    if (!buzzerInitialized) { return; }
+    if (!buzzerRunning) { return; }
 
     CCP2IE = 0;
     TMR3ON = 0;
     CCP2CON = 0;
-    buzzerInitialized = 0;
+    buzzerRunning = 0;
+    buzzerNextToneState = 0;
+}
+
+bit buzzerIsPlaying()
+{
+    return buzzerRunning;
+}
+
+bit buzzerNextToneReady()
+{
+    return buzzerNextToneState ? 1 : 0;
 }
 
 void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout)
@@ -182,10 +161,25 @@ void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout)
         halfPeriod = 1200;
     }
 
-    buzzerNextToneState = 0;
+    buzzerNextToneState = BUZZER_NEXT_TONE_NOT_READY;
     buzzerNextHalfPeriod = halfPeriod;
     buzzerNextTimeout = timeout;
-    buzzerNextToneState = 2;
+    buzzerNextToneState = BUZZER_NEXT_TONE_ASAP;
+
+    buzzerStartRunning();
+}
+
+void buzzerPlayRawToneNext(uint16_t halfPeriod, uint16_t timeout)
+{
+    if (halfPeriod && halfPeriod < 1200)
+    {
+        halfPeriod = 1200;
+    }
+
+    buzzerNextToneState = BUZZER_NEXT_TONE_NOT_READY;
+    buzzerNextHalfPeriod = halfPeriod;
+    buzzerNextTimeout = timeout;
+    buzzerNextToneState = BUZZER_NEXT_TONE_READY;
 
     buzzerStartRunning();
 }
