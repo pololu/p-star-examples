@@ -85,7 +85,7 @@ void buzzerIsr()
             {
                 // This is a silent tone.  Just schedule the next
                 // match and interrupt for 1 ms from now.
-                CCPR2 = 12000;
+                CCPR2 += 12000;
             }
             else
             {
