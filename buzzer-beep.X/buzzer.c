@@ -3,10 +3,13 @@
 #include "buzzer.h"
 #include <xc.h>
 
-// This is non-zero if this buzzer library is active.  When this is zero, the
-// buzzer ISR will not do anything, and functions that start playing the buzzer
-// will reinitialize all of the needed peripherals.
-volatile uint8_t buzzerRunning = 0;
+// This is non-zero if this buzzer library has configured its peripherals.
+volatile uint8_t buzzerInitialized = 0;
+
+// Note that we use CCP2IE as another important state variable.
+// If CCP2IE is 1, it implies that Timer 3 is running and we are playing
+// a note (or silence) commanded by the user.
+// If CCP2IE is 0, it implies the opposite.
 
 // If the buzzer is running, this is the current half period of the frequency we
 // are playing on the buzzer.
@@ -48,10 +51,7 @@ void buzzerIsrStartNextToneIfNeeded()
         }
         else
         {
-            // The next tone is not ready, so just stay silent for now.  We'll
-            // leave buzzerTimeout set to 0, so we'll reach this code again in 1
-            // ms and check for a new tone.
-            buzzerHalfPeriod = 0;
+            // The next tone is not ready, so stop the buzzer.
         }
     }
     else
@@ -62,7 +62,7 @@ void buzzerIsrStartNextToneIfNeeded()
 
 void buzzerIsr()
 {
-    if (buzzerRunning && CCP2IE && CCP2IF)
+    if (buzzerInitialized && CCP2IE && CCP2IF)
     {
         // Clear the interrupt flag.
         CCP2IF = 0;
@@ -75,7 +75,13 @@ void buzzerIsr()
 
             buzzerIsrStartNextToneIfNeeded();
 
-            if (buzzerHalfPeriod == 0)
+            if (buzzerTimeout == 0)
+            {
+                // Stop the buzzer.
+                CCP2IE = 0;
+                TMR3ON = 0;
+            }
+            else if (buzzerHalfPeriod == 0)
             {
                 // This is a silent tone.  Just schedule the next
                 // match and interrupt for 1 ms from now.
@@ -100,13 +106,11 @@ void buzzerIsr()
     }
 }
 
-void buzzerStart()
+void buzzerInit()
 {
-    if (buzzerRunning) { return; }
+    if (buzzerInitialized) { return; }
 
-    buzzerRunning = 1;
-    buzzerHalfPeriod = 0;
-    buzzerTimeout = 0;
+    buzzerInitialized = 1;
     buzzerNextToneState = 0;
 
     // Make RC1 be an output and drive low by default when CCP2 is not
@@ -120,41 +124,55 @@ void buzzerStart()
     // CCP2: Use Timer 3.
     C2TSEL = 1;
 
+    // CCP2 interrupt priority: low.
+    CCP2IP = 0;
+}
+
+static void buzzerStartRunning()
+{
+    buzzerInit();
+
+    if (CCP2IE) { return; }
+
+    buzzerHalfPeriod = 0;
+    buzzerTimeout = 0;
+
     // Set up the match to happen soon.
     TMR3H = 0;
     TMR3L = 0;
     CCPR2 = 1;
 
-    // Turn on CCP2 and configure it to clear the output when the compare
-    // match happens.  When we do this, the CCP2 signal gets connected to RC1.
-    // If that signal is high from previous operation of the CCP2 module,
-    // then RC1 will go high at this point for 2 instruction cycles.
+    // Turn on CCP2 and configure it to clear the output when the compare match
+    // happens.  When we set CCP2CON, the CCP2 signal gets connected to RC1.  If
+    // that signal is high from previous operation of the CCP2 module, then RC1
+    // will go high at this point for 2 instruction cycles.
     CCP2CON = 0b00001001;
 
     // Turn on the timer.
     TMR3ON = 1;
 
-    CCP2IP = 0;
-    CCP2IF = 0;
     CCP2IE = 1;
 }
 
 void buzzerStop()
 {
-    if (!buzzerRunning) { return; }
+    buzzerPlayRawTone(0, 1);
+}
+
+void buzzerDeinit()
+{
+    if (!buzzerInitialized) { return; }
 
     CCP2IE = 0;
     TMR3ON = 0;
     CCP2CON = 0;
-    buzzerRunning = 0;
+    buzzerInitialized = 0;
 }
 
 void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout)
 {
-    buzzerStart();
-
     // Force the half period to be at least 100 us, so the maximum frequency is
-    // 5 kHz.  We can't make the half period too small, or else, the interrupts
+    // 5 kHz.  We can't make the half period too small, or else the interrupts
     // would start being scheduled too quickly and some of them would be missed,
     // resulting in a bad waveform.  It would also be possible for the
     // interrupts to take up all of the CPU time, preventing the P-Star from
@@ -168,4 +186,6 @@ void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout)
     buzzerNextHalfPeriod = halfPeriod;
     buzzerNextTimeout = timeout;
     buzzerNextToneState = 2;
+
+    buzzerStartRunning();
 }

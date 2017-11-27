@@ -10,7 +10,8 @@ a low-priority interrupt.
 ## Getting started
 
 A [buzzer] should be connected such that current flows through the buzzer
-whenever RC1 (also known as CCP2) drives high.  You can simply connect one lead of the buzzer to CCP2 and connect another lead of the buzzer to GND.
+whenever RC1 (also known as CCP2) drives high.  You can simply connect one
+lead of the buzzer to CCP2 and connect another lead of the buzzer to GND.
 
 See [the top-level README](../README.md) for information about building this
 example and writing it to the P-Star.
@@ -41,3 +42,9 @@ applications:
 - buzzer.h, buzzer.c
 
 [buzzer]: https://www.pololu.com/product/1484
+
+
+## Related examples
+
+For an example that shows how to play music on the buzzer instead of just simple
+beeps, see the example in `buzzer-music.X`.
