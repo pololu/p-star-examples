@@ -47,6 +47,14 @@ bit buzzerNextToneReady();
 // period of 1 ms and a half period of 500 us.  Therefore you would set the half
 // period to 500*12 = 6000.  If you want it to play for 250 ms, tone that the
 // period is 1 ms, and set the timeout to (250 ms) / (1 ms) = 250.
+//
+// To convert from frequency and duration to halfPeriod and timeout, you can use
+// these formulae:
+//
+//   halfPeriod = (XTAL_FREQ/8) / (frequency in Hz)
+//   timeout = (duration in s) * (frequency in Hz)
+//   XTAL_FREQ = 48000000  (typically for the P-Star)
+
 void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout);
 
 // This is just like buzzerPlayRawTone, but it does not interrupt the tone that
