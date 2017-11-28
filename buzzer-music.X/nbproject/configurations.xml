@@ -1,26 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="62">
   <logicalFolder name="root" displayName="root" projectFiles="true">
-    <logicalFolder name="ExternalFiles" displayName="Important Files" projectFiles="true">
-      <itemPath>Makefile</itemPath>
-    </logicalFolder>
-    <logicalFolder name="HeaderFiles" displayName="Header Files" projectFiles="true">
-      <itemPath>buzzer-music.h</itemPath>
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
       <logicalFolder name="f2" displayName="Libraries" projectFiles="true">
         <itemPath>buzzer.h</itemPath>
         <itemPath>system.h</itemPath>
         <itemPath>time.h</itemPath>
       </logicalFolder>
+      <itemPath>buzzer-music.h</itemPath>
     </logicalFolder>
-    <logicalFolder name="LinkerScript" displayName="LinkerFiles" projectFiles="true">
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="true">
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
-    <logicalFolder name="SourceFiles" displayName="Source Files" projectFiles="true">
-      <itemPath>buzzer-music.c</itemPath>
-      <itemPath>main.c</itemPath>
+    <logicalFolder name="LinkerScript"
+                   displayName="LinkerFiles"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
       <logicalFolder name="f1" displayName="Libraries" projectFiles="true">
         <itemPath>buzzer.c</itemPath>
         <itemPath>time.c</itemPath>
       </logicalFolder>
+      <itemPath>buzzer-music.c</itemPath>
+      <itemPath>main.c</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
@@ -30,11 +38,39 @@
   <confs>
     <conf name="P-Star_25K50" type="2">
       <toolsSet>
+        <developmentServer>localhost</developmentServer>
         <targetDevice>PIC18F25K50</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
         <platformTool>Simulator</platformTool>
         <languageToolchain>XC8</languageToolchain>
+        <languageToolchainVersion>1.33</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+        <subordinates>
+        </subordinates>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
       <HI-TECH-COMP>
         <property key="warning-level" value="-3"/>
       </HI-TECH-COMP>
@@ -42,14 +78,50 @@
         <property key="additional-options-code-offset" value="0x2000"/>
         <appendMe value="--msgdisable=1311:off"/>
       </HI-TECH-LINK>
+      <XC8-config-global>
+        <property key="advanced-elf" value="true"/>
+        <property key="output-file-format" value="-mcof,+elf"/>
+        <property key="stack-size-high" value="auto"/>
+        <property key="stack-size-low" value="auto"/>
+        <property key="stack-size-main" value="auto"/>
+        <property key="stack-type" value="compiled"/>
+      </XC8-config-global>
     </conf>
     <conf name="P-Star_45K50" type="2">
       <toolsSet>
+        <developmentServer>localhost</developmentServer>
         <targetDevice>PIC18F45K50</targetDevice>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
         <platformTool>Simulator</platformTool>
         <languageToolchain>XC8</languageToolchain>
+        <languageToolchainVersion>1.33</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
+      <compileType>
+        <linkerTool>
+          <linkerLibItems>
+          </linkerLibItems>
+        </linkerTool>
+        <archiverTool>
+        </archiverTool>
+        <loading>
+          <useAlternateLoadableFile>false</useAlternateLoadableFile>
+          <parseOnProdLoad>false</parseOnProdLoad>
+          <alternateLoadableFile></alternateLoadableFile>
+        </loading>
+        <subordinates>
+        </subordinates>
+      </compileType>
+      <makeCustomizationType>
+        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
+        <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
+        <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
+        <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
+      </makeCustomizationType>
       <HI-TECH-COMP>
         <property key="warning-level" value="-3"/>
       </HI-TECH-COMP>
@@ -57,6 +129,14 @@
         <property key="additional-options-code-offset" value="0x2000"/>
         <appendMe value="--msgdisable=1311:off"/>
       </HI-TECH-LINK>
+      <XC8-config-global>
+        <property key="advanced-elf" value="true"/>
+        <property key="output-file-format" value="-mcof,+elf"/>
+        <property key="stack-size-high" value="auto"/>
+        <property key="stack-size-low" value="auto"/>
+        <property key="stack-size-main" value="auto"/>
+        <property key="stack-type" value="compiled"/>
+      </XC8-config-global>
     </conf>
   </confs>
 </configurationDescriptor>
