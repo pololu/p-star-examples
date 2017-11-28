@@ -124,6 +124,12 @@ parseCharacter:
 
     switch (c)
     {
+    case '>':
+        octave++;
+        goto parseCharacter;
+    case '<':
+        octave--;
+        goto parseCharacter;
     case 'a':
         note = 0;
         break;
@@ -200,6 +206,7 @@ parseCharacter:
         durationDivider = buzzerMusicGetNumber();
     }
 
+    // Avoid invalid shifts below.
     if (octave > OCTAVE_MAX)
     {
         octave = OCTAVE_MAX;

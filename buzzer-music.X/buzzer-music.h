@@ -31,9 +31,9 @@
 //
 // Various control characters alter the sound:
 //
-//   TODO: '>' plays the next note one octave higher
+//   '>' plays the next note one octave higher
 //
-//   TODO: '<' plays the next note one octave lower
+//   '<' plays the next note one octave lower
 //
 //   '+' or '#' after a note raises any note one half-step
 //
@@ -64,10 +64,10 @@
 //   TODO: '!' resets all persistent settings to their defaults.
 //
 // TODO: The following plays a c major scale up and back down:
-//   play("L16 cdefgab>cbagfedc");
+//   play("!L16 cdefgab>cbagfedc");
 //
 // TODO: Here is an example from Bach:
-//   play("T240 L8 a gafaeada c+adaeafa <aa<bac#ada c#adaeaf4");
+//   play("!T240 L8 a gafaeada c+adaeafa <aa<bac#ada c#adaeaf4");
 void buzzerMusicPlay(const char * sequence);
 
 // Stop playing music.
