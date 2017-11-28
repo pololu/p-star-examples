@@ -109,6 +109,7 @@ void buzzerMusicService()
 
     uint8_t c;
     uint8_t note = 0;
+    uint8_t rest = 0;
     uint8_t octave = buzzerDefaultOctave;
     uint8_t durationDivider = buzzerDefaultDurationDivider;
 
@@ -145,18 +146,13 @@ parseCharacter:
         note = 10;
         break;
     case 'r':
-        note = 12;
+        rest = 1;
         break;
     case 'l':
         buzzerDefaultDurationDivider = durationDivider = buzzerMusicGetNumber();
         goto parseCharacter;
     case 'o':
-        buzzerDefaultOctave = buzzerMusicGetNumber();
-        if (buzzerDefaultOctave > OCTAVE_MAX)
-        {
-            buzzerDefaultOctave = OCTAVE_MAX;
-        }
-        octave = buzzerDefaultOctave;
+        buzzerDefaultOctave = octave = buzzerMusicGetNumber();
         goto parseCharacter;
     case '!':
         buzzerMusicResetToDefaults();
@@ -170,10 +166,50 @@ parseCharacter:
         goto parseCharacter;
     }
 
+    // We found a note.  Now peek at the next character in the sequence so we
+    // can detect modifiers.
+    c = *buzzerSequence;
+
+    // Handle sharps and flats.  If 'note' overflows outside of the 0 to 11
+    // range, we correct it and change the octave.
+    while (c == '+' || c == '#')
+    {
+        note++;
+        if (note >= 12)
+        {
+            note = 0;
+            octave++;
+        }
+        c = *++buzzerSequence;
+    }
+    while (c == '-')
+    {
+        note--;
+        if (note >= 12)
+        {
+            note = 11;
+            octave--;
+        }
+        c = *++buzzerSequence;
+    }
+
+    // Check for a duration divider after the note.
+    // (e.g. 'c16' is a sixteenth note).
+    if (c >= '0' && c <= '9')
+    {
+        durationDivider = buzzerMusicGetNumber();
+    }
+
+    if (octave > OCTAVE_MAX)
+    {
+        octave = OCTAVE_MAX;
+    }
+
+    // Now calculate 'halfPeriod' and 'timeout' from
+    // 'octave', 'note', 'durationDivider', and 'rest'.
     uint16_t halfPeriod;
     uint16_t timeout;
-
-    if (note == 12)
+    if (rest)
     {
         // Rest note
         halfPeriod = 0;

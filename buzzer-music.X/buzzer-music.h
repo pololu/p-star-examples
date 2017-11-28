@@ -35,21 +35,21 @@
 //
 //   TODO: '<' plays the next note one octave lower
 //
-//   TODO: '+' or '#' after a note raises any note one half-step
+//   '+' or '#' after a note raises any note one half-step
 //
-//   TODO: '-' after a note lowers any note one half-step
+//   '-' after a note lowers any note one half-step
 //
 //   TODO: '.' after a note "dots" it, increasing the length by
 //       50%.  Each additional dot adds half as much as the
 //       previous dot, so that "A.." is 1.75 times the length of
 //       "A".
 //
-//   TODO: 'O' followed by a number sets the octave (default: O4).
+//   'O' followed by a number sets the octave (default: O4).
 //       The octave number must be between 0 and 6.
 //
 //   TODO: 'T' followed by a number sets the tempo (default: T120).
 //
-//   TODO: 'L' followed by a number sets the default note duration to
+//   'L' followed by a number sets the default note duration to
 //       the type specified by the number: 4 for quarter notes, 8
 //       for eighth notes, 16 for sixteenth notes, etc.
 //       (default: L4)
