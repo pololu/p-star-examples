@@ -53,7 +53,6 @@ bit buzzerNextToneReady(void);
 //
 //   halfPeriod = (1500000) / (frequency in Hz)
 //   timeout = (duration in s) * (frequency in Hz)
-
 void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout);
 
 // This is just like buzzerPlayRawTone, but it does not interrupt the tone that

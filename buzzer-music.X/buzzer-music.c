@@ -3,7 +3,8 @@
 #include <stdint.h>
 
 // The half periods of the notes in octave 0.
-const uint16_t buzzerHalfPeriodTableOctave0[12] =
+// Spot 12 holds the half period for a rest note (0).
+const uint16_t buzzerHalfPeriodTableOctave0[13] =
 {
     54545,  // 0 = A    Half period of A = 1500000/(440/16)
     51484,  // 1 = A#   Half period of A# is smaller by a factor of 2^(1/12)
@@ -17,24 +18,28 @@ const uint16_t buzzerHalfPeriodTableOctave0[12] =
     32432,  // 9 = F#
     30612,  // 10 = G
     28894,  // 11 = G#
+    0,      // Rests are encoded as half periods of 0.
 };
 
 // The timeouts of whole notes in octave 6.  A whole note is 2 s, so this is
 // really just 2 times the frequency.
-const uint16_t buzzerTimeoutTableOctave6[12] =
+// Spot 12 holds the timeout value to use for a rest note; the lower-level
+// library treats it as a 1 kHz note for the purpose of setting timeouts.
+const uint16_t buzzerTimeoutTableOctave6[13] =
 {
-    3520,
-    3729,
-    3951,
-    4186,
-    4435,
-    4699,
-    4978,
-    5274,
-    5588,
-    5920,
-    6272,
-    6645,
+    3520,  // 0 = A
+    3729,  // 1 = A#
+    3951,  // 2 = B
+    4186,  // 3 = C
+    4435,  // 4 = C#
+    4699,  // 5 = D
+    4978,  // 6 = D#
+    5274,  // 7 = E
+    5588,  // 8 = F
+    5920,  // 9 = F#
+    6272,  // 10 = G
+    6645,  // 11 = G#
+    2000,  // Rests are treated as 1 kHz.
 };
 
 uint8_t buzzerMusicRunning = 0;
@@ -106,8 +111,9 @@ parse_character:
     case 'g':
         note = 10;
         break;
-    // TODO: case 'r':
-        // break;
+    case 'r':
+        note = 12;
+        break;
     case 0:
         buzzerMusicRunning = 0;
         return;
