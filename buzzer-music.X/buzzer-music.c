@@ -2,57 +2,67 @@
 
 #include <stdint.h>
 
-// We set A4 (the note A in octave 4) to have a frequency of 440 Hz.
+// Each octave has 12 notes, numbered from 0 to 11.  The lowest is C (note 0)
+// and the highest is B (note 11).  We set A4 (the note A in octave 4) to have a
+// frequency of 440 Hz.
 //
-// The lowest octave we support is octave 0; A0 has a freqency of 440/16 =
-// 27.50 Hz, so its half period is 54545, which is almost too much to fit in the
-// 16-bit CCPR2 register.
+// Given a note number and an octave, these formulae define the quanties we need
+// for our low-level buzzer library:
 //
-// The highest octave we support is octave we support is 6.  The G#6 note has a
-// frequency of 3322 Hz, so it is almost too high for the 5 kHz limit of the
-// buzzer.c library we use.
+//   note_value = octave * 12 + note
+//   frequency = 440/16 * (2**((note_value-9)/12))
+//   half_period = 1500000 / frequency
+//   whole note (2 s) timeout = frequency * 2
+//
+// The lowest octave we support is octave 1.  C1 has a freqency of 32.70 Hz, so
+// its half period is 45867, which is almost too much to fit in the 16-bit CCPR2
+// register.
+//
+// The highest octave we support is octave we support is 7.  The B7 note has a
+// frequency of 3951 Hz, so it is almost too high for the 5 kHz limit of the
+// low-level buzzer library we use.
 
-#define OCTAVE_MAX 6
+#define OCTAVE_MIN 1
+#define OCTAVE_MAX 7
 
-// The half periods of the notes in octave 0.
-const uint16_t buzzerHalfPeriodTableOctave0[12] =
+// The half periods of the notes in octave 1.
+const uint16_t buzzerHalfPeriodTableOctaveMin[12] =
 {
-    54545,  // 0 = A    Half period of A = 1500000/(440/16)
-    51484,  // 1 = A#   Half period of A# is smaller by a factor of 2^(1/12)
-    48594,  // 2 = B
-    45867,  // 3 = C
-    43292,  // 4 = C#
-    40862,  // 5 = D
-    38569,  // 6 = D#
-    36405,  // 7 = E
-    34631,  // 8 = F
-    32432,  // 9 = F#
-    30612,  // 10 = G
-    28894,  // 11 = G#
+    45867,
+    43293,
+    40863,
+    38569,
+    36405,
+    34361,
+    32433,
+    30613,
+    28894,
+    27273,
+    25742,
+    24297,
 };
 
-// The timeouts of whole notes in octave 6.  A whole note is 2 s, so this is
-// really just 2 times the frequency.
-const uint16_t buzzerTimeoutTableOctave6[12] =
+// The timeouts of whole notes in octave 7.
+const uint16_t buzzerTimeoutTableOctaveMax[12] =
 {
-    3520,  // 0 = A
-    3729,  // 1 = A#
-    3951,  // 2 = B
-    4186,  // 3 = C
-    4435,  // 4 = C#
-    4699,  // 5 = D
-    4978,  // 6 = D#
-    5274,  // 7 = E
-    5588,  // 8 = F
-    5920,  // 9 = F#
-    6272,  // 10 = G
-    6645,  // 11 = G#
+    4186,
+    4435,
+    4699,
+    4978,
+    5274,
+    5588,
+    5920,
+    6272,
+    6645,
+    7040,
+    7458,
+    7902,
 };
 
 uint8_t buzzerMusicRunning = 0;
 const char * buzzerSequence;
 
-// The octave number, from 0 to OCTAVE_MAX.
+// The octave number, from OCTAVE_MIN to OCTAVE_MAX.
 uint8_t buzzerDefaultOctave = 4;
 
 // The duration divider determines how long the notes are.
@@ -130,26 +140,26 @@ parseCharacter:
     case '<':
         octave--;
         goto parseCharacter;
-    case 'a':
+    case 'c':
         note = 0;
         break;
-    case 'b':
+    case 'd':
         note = 2;
         break;
-    case 'c':
-        note = 3;
-        break;
-    case 'd':
-        note = 5;
-        break;
     case 'e':
-        note = 7;
+        note = 4;
         break;
     case 'f':
-        note = 8;
+        note = 5;
         break;
     case 'g':
-        note = 10;
+        note = 7;
+        break;
+    case 'a':
+        note = 9;
+        break;
+    case 'b':
+        note = 11;
         break;
     case 'r':
         rest = 1;
@@ -207,10 +217,8 @@ parseCharacter:
     }
 
     // Avoid invalid shifts below.
-    if (octave > OCTAVE_MAX)
-    {
-        octave = OCTAVE_MAX;
-    }
+    if (octave < OCTAVE_MIN) { octave = OCTAVE_MIN; }
+    if (octave > OCTAVE_MAX) { octave = OCTAVE_MAX; }
 
     // Now calculate 'halfPeriod' and 'timeout' from
     // 'octave', 'note', 'durationDivider', and 'rest'.
@@ -224,8 +232,8 @@ parseCharacter:
     }
     else
     {
-        halfPeriod = buzzerHalfPeriodTableOctave0[note] >> octave;
-        timeout = (buzzerTimeoutTableOctave6[note] >> (OCTAVE_MAX - octave))
+        halfPeriod = buzzerHalfPeriodTableOctaveMin[note] >> (octave - OCTAVE_MIN);
+        timeout = (buzzerTimeoutTableOctaveMax[note] >> (OCTAVE_MAX - octave))
             / durationDivider;
     }
 

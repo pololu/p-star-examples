@@ -45,7 +45,7 @@
 //       "A".
 //
 //   'O' followed by a number sets the octave (default: O4).
-//       The octave number must be between 0 and 6.
+//       The octave number must be between 1 and 7.
 //
 //   TODO: 'T' followed by a number sets the tempo (default: T120).
 //
@@ -61,13 +61,13 @@
 //   TODO: 'ML' sets all subsequent notes to play legato - each note is played
 //       for its full length.  This is the default setting.
 //
-//   TODO: '!' resets all persistent settings to their defaults.
+//   '!' resets all persistent settings to their defaults.
 //
-// TODO: The following plays a c major scale up and back down:
+// The following plays a c major scale up and back down:
 //   play("!L16 cdefgab>cbagfedc");
 //
-// TODO: Here is an example from Bach:
-//   play("!T240 L8 a gafaeada c+adaeafa <aa<bac#ada c#adaeaf4");
+// Here is an example from Bach:
+//   play("!L8 a gafaeada c+adaeafa <aa<bac#ada c#adaeaf4");
 void buzzerMusicPlay(const char * sequence);
 
 // Stop playing music.
