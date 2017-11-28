@@ -1,7 +1,7 @@
 // Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
 
-// This header file defines the interface to buzzer-music.c, a library that uses
-// buzzer.c to play series of musical notes.
+// This header file defines the interface to buzzer-music.c, a library for the
+// P-Star that uses buzzer.c to play series of musical notes.
 //
 // To use this library, make sure you call buzzerIsr() in your low-priority ISR,
 // and regularly call buzzerMusicService in your main loop.
@@ -12,12 +12,14 @@
 // Include this so the user can get the prototype for buzzerIsr().
 #include "buzzer.h"
 
-// Starts playing the specificied musical sequence of notes.
+// Starts playing the specificied musical sequence of notes.  This function is
+// non-blocking and will return quickly.  You can do other tasks while the music
+// is playing as long as you call buzzerMusicService regularly.
 //
 // The sequence should be a null-terminated string.
 //
-// The syntax is based on the PLAY commands in GW-BASIC and the OrangutanBuzzer
-// module in the Pololu AVR Library (libpololu-avr).
+// The syntax of the string is based on the PLAY commands in GW-BASIC and the
+// OrangutanBuzzer module in the Pololu AVR Library (libpololu-avr).
 //
 // The notes are specified by the characters C, D, E, F, G, A, and
 // B, and they are played by default as "quarter notes" with a
@@ -43,6 +45,7 @@
 //       "A".
 //
 //   TODO: 'O' followed by a number sets the octave (default: O4).
+//       The octave number must be between 0 and 6.
 //
 //   TODO: 'T' followed by a number sets the tempo (default: T120).
 //

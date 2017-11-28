@@ -1,7 +1,12 @@
 // Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
 
-// This header file defines the interface for buzzer.c, a library that lets you
-// use Timer 3 and the CCP2 module to play simple beeps on pin RC1/CCP2.
+// This header file defines the interface for buzzer.c, a library for the P-Star
+// that lets you use Timer 3 and the CCP2 module to play simple beeps on pin
+// RC1/CCP2.
+//
+// This library assumes the P-Star is running at its default speed of
+// 12 MHz (XTAL_FREQ = 48000000).
+
 
 #ifndef _BUZZER_H
 #define _BUZZER_H
@@ -36,9 +41,9 @@ bit buzzerNextToneReady(void);
 // halfPeriod is one half of the period of the tone, in units of 1/3 us.  The
 // period is the reciprocal of the frequency.  A halfPeriod of 0 indicaties that
 // the next tone should be silent, and have a full period of 1 ms for the
-// purposes of the timeout calculation.  If the halfPeriod is between 1 and
-// 1199, this function changes it to 1200 to ensure that this library's ISRs do
-// not run too often).
+// purposes of the timeout calculation.  If the halfPeriod is between 1 and 299,
+// this function changes it to 300 to ensure that this library's ISRs do not run
+// too often).  So the maximum allowed frequency is 5 kHz.
 //
 // The timeout is how long the tone should be, in units of full periods.
 // It can be any number from 0 to 65535.
@@ -53,7 +58,6 @@ bit buzzerNextToneReady(void);
 //
 //   halfPeriod = (1500000) / (frequency in Hz)
 //   timeout = (duration in s) * (frequency in Hz)
-
 void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout);
 
 // This is just like buzzerPlayRawTone, but it does not interrupt the tone that

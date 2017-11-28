@@ -1,7 +1,12 @@
 // Copyright Pololu Corporation.  For more information, see https://www.pololu.com/
 
-// This header file defines the interface for buzzer.c, a library that lets you
-// use Timer 3 and the CCP2 module to play simple beeps on pin RC1/CCP2.
+// This header file defines the interface for buzzer.c, a library for the P-Star
+// that lets you use Timer 3 and the CCP2 module to play simple beeps on pin
+// RC1/CCP2.
+//
+// This library assumes the P-Star is running at its default speed of
+// 12 MHz (XTAL_FREQ = 48000000).
+
 
 #ifndef _BUZZER_H
 #define _BUZZER_H

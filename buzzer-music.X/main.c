@@ -27,7 +27,7 @@ void main(void)
         if ((uint16_t)(timeMs - lastPlayTime) > 2000 && !buzzerMusicIsPlaying())
         {
             lastPlayTime = timeMs;
-            buzzerMusicPlay("L16 cdegreg4");
+            buzzerMusicPlay("!L16 cdegreg4");
         }
 
         // Start the bootloader if the user shorts RB6 to VDD.
