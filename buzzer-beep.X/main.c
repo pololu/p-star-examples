@@ -26,7 +26,7 @@ void main(void)
         if ((uint16_t)(timeMs - lastBeepTime) > 1000)
         {
             lastBeepTime = timeMs;
-            buzzerPlayRawTone(65535, 10);  // 500 Hz, 50 ms
+            buzzerPlayRawTone(3409, 22);  // 440 Hz, 50 ms
         }
 
         // Start the bootloader if the user shorts RB6 to VDD.
