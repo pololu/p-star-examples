@@ -9,12 +9,12 @@
 #include <stdint.h>
 
 // You should call this in your low-priority ISR.
-void buzzerIsr();
+void buzzerIsr(void);
 
 // This function disables the buzzer library.  After calling this, you can use
 // Timer 3, CCP2, and their interrupts for other purposes.  It is OK to keep
 // calling buzzerIsr while the buzzer library is disabled.
-void buzzerStop();
+void buzzerStop(void);
 
 // Returns true if the buzzer is currently playing a note.
 //
@@ -22,11 +22,11 @@ void buzzerStop();
 //
 // Note that if you are using the buzzer-music library, you should call
 // buzzerMusicIsPlaying() instead of this.
-bit buzzerIsPlaying();
+bit buzzerIsPlaying(void);
 
 // Returns true if the buzzer library is enabled and there is a tone queued up to
 // be played after the current tone is finished.
-bit buzzerNextToneReady();
+bit buzzerNextToneReady(void);
 
 // Tells the buzzer to play a tone/note/beep.
 //

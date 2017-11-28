@@ -7,7 +7,7 @@ void interrupt low_priority lowIsr()
     buzzerIsr();
 }
 
-void main(void)
+void main()
 {
     timeInit();
 
