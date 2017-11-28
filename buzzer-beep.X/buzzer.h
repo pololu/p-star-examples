@@ -33,7 +33,7 @@ bit buzzerNextToneReady();
 // This function initializes the buzzer library if necessary, and interrupts any
 // tone that is currently being played on the buzzer.
 //
-// halfPeriod is one half of the period of the tone, in units of 1/12 us.  The
+// halfPeriod is one half of the period of the tone, in units of 1/3 us.  The
 // period is the reciprocal of the frequency.  A halfPeriod of 0 indicaties that
 // the next tone should be silent, and have a full period of 1 ms for the
 // purposes of the timeout calculation.  If the halfPeriod is between 1 and
@@ -51,9 +51,8 @@ bit buzzerNextToneReady();
 // To convert from frequency and duration to halfPeriod and timeout, you can use
 // these formulae:
 //
-//   halfPeriod = (XTAL_FREQ/8) / (frequency in Hz)
+//   halfPeriod = (1500000) / (frequency in Hz)
 //   timeout = (duration in s) * (frequency in Hz)
-//   XTAL_FREQ = 48000000  (typically for the P-Star)
 
 void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout);
 

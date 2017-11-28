@@ -98,8 +98,9 @@ static void buzzerStartRunning()
     LATC1 = 0;
     TRISC1 = 0;
 
-    // Timer 3: Turn on 16-bit reads/writes.  Leave the timer off for now.
-    T3CON = 0b00000010;
+    // Timer 3: Set prescaler to 1:4 and turn on 16-bit reads/writes.
+    // Leave the timer off for now.
+    T3CON = 0b00100010;
 
     // CCP2: Use Timer 3.
     C2TSEL = 1;
@@ -156,9 +157,9 @@ void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout)
     // resulting in a bad waveform.  It would also be possible for the
     // interrupts to take up all of the CPU time, preventing the P-Star from
     // doing anything in its main loop.
-    if (halfPeriod && halfPeriod < 1200)
+    if (halfPeriod && halfPeriod < 300)
     {
-        halfPeriod = 1200;
+        halfPeriod = 300;
     }
 
     buzzerNextToneState = BUZZER_NEXT_TONE_NOT_READY;
@@ -171,9 +172,9 @@ void buzzerPlayRawTone(uint16_t halfPeriod, uint16_t timeout)
 
 void buzzerPlayRawToneNext(uint16_t halfPeriod, uint16_t timeout)
 {
-    if (halfPeriod && halfPeriod < 1200)
+    if (halfPeriod && halfPeriod < 300)
     {
-        halfPeriod = 1200;
+        halfPeriod = 300;
     }
 
     buzzerNextToneState = BUZZER_NEXT_TONE_NOT_READY;
