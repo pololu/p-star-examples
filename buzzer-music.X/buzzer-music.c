@@ -42,21 +42,22 @@ const uint16_t buzzerHalfPeriodTableOctaveMin[12] =
     24297,
 };
 
-// The timeouts of whole notes in octave 7.
-const uint16_t buzzerTimeoutTableOctaveMax[12] =
+// This table holds the timeouts of whole notes in octave 7 at a tempo of 120
+// beats (quarter notes) per minute.  So this is the number of buzzer periods
+// that happen in a whole note (2 s), so it is just the frequency of the note in
+// Hz times 2.
+const uint16_t buzzerTimeoutTableOctaveMaxTempo120[12] =
 {
-    4186,
-    4435,
-    4699,
-    4978,
-    5274,
-    5588,
-    5920,
-    6272,
-    6645,
-    7040,
-    7458,
-    7902,
+    4186, 4435, 4699, 4978, 5274, 5588,
+    5920, 6272, 6645, 7040, 7458, 7902,
+};
+
+// This is a writable copy of the timeout table above that we modify if the user
+// changes the tempo.
+uint16_t buzzerTimeoutTableOctaveMax[12] =
+{
+    4186, 4435, 4699, 4978, 5274, 5588,
+    5920, 6272, 6645, 7040, 7458, 7902,
 };
 
 uint8_t buzzerMusicRunning = 0;
@@ -69,10 +70,22 @@ uint8_t buzzerDefaultOctave = 4;
 // 1 = whole, 2 = half, 3 = one third of a whole note, 4 = quarter note
 uint8_t buzzerDefaultDurationDivider = 4;
 
+// Sets the tempo (number of quarter notes per minute).  The tempo must be at
+// least 15 or we will have an overflow in the calculations.
+static void buzzerMusicSetTempo(uint16_t tempo)
+{
+    for (uint8_t i = 0; i < 11; i++)
+    {
+        buzzerTimeoutTableOctaveMax[i] =
+            (uint32_t)buzzerTimeoutTableOctaveMaxTempo120[i] * 120 / tempo;
+    }
+}
+
 static void buzzerMusicResetToDefaults()
 {
     buzzerDefaultOctave = 4;
     buzzerDefaultDurationDivider = 4;
+    buzzerMusicSetTempo(120);
 }
 
 void buzzerMusicPlay(const char * sequence)
@@ -169,6 +182,9 @@ parseCharacter:
         goto parseCharacter;
     case 'o':
         buzzerDefaultOctave = octave = buzzerMusicGetNumber();
+        goto parseCharacter;
+    case 't':
+        buzzerMusicSetTempo(buzzerMusicGetNumber());
         goto parseCharacter;
     case '!':
         buzzerMusicResetToDefaults();
