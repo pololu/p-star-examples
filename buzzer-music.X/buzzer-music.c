@@ -256,5 +256,15 @@ parseCharacter:
             / durationDivider;
     }
 
+    // Handle dotted notes - the first dot adds 50%, and each additional dot
+    // adds 50% of the previous dot.
+    uint16_t dotValue = timeout >> 1;
+    while (*buzzerSequence == '.')
+    {
+        buzzerSequence++;
+        timeout += dotValue;
+        dotValue /= 2;
+    }
+
     buzzerPlayRawToneNext(halfPeriod, timeout);
 }

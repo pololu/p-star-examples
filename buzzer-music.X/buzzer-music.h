@@ -39,21 +39,21 @@
 //
 //   '-' after a note lowers any note one half-step
 //
-//   'O' followed by a number sets the octave (default: O4).
-//       The octave number must be between 1 and 7.
+//   'O' followed by a number sets the octave (default: O4).  The octave number
+//       must be between 1 and 7.
 //
-//   'L' followed by a number sets the default note duration to
-//       the type specified by the number: 4 for quarter notes, 8
-//       for eighth notes, 16 for sixteenth notes, etc.
-//       (default: L4)
+//   'L' followed by a number sets the default note duration to the type
+//       specified by the number: 4 for quarter notes, 8 for eighth notes, 16
+//       for sixteenth notes, etc.  (default: L4)
 //
-//   TODO: '.' after a note "dots" it, increasing the length by
-//       50%.  Each additional dot adds half as much as the
-//       previous dot, so that "A.." is 1.75 times the length of
-//       "A".
+//   '.' after a note "dots" it, increasing the length by 50%.  Each additional
+//       dot adds half as much as the previous dot, so that "A.." is 1.75 times
+//       the length of "A".
 //
 //   'T' followed by a number sets the tempo, which is the number of quarter
-//       notes per minute (default: T120).  The tempo must be at least 15.
+//       notes per minute (default: T120).  In general, the tempo must be at
+//       least 30, but if your song does not use dots ('.') then it can go down
+//       to 15.
 //
 //   TODO: 'MS' sets all subsequent notes to play staccato - each note is played
 //       for 1/2 of its allotted time, followed by an equal period
