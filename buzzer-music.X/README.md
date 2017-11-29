@@ -1,12 +1,18 @@
-# Buzzer Beep Example for the P-Star
+# Buzzer Music Example for the P-Star
 
 ## Summary
 
-This example shows how you can program a P-Star to play simple beeps on a
+This example shows how you can program a P-Star to play musical melodies on a
 buzzer.  It uses Timer 3, the CCP2 module in compare mode, the RC1/CCP2 pin, and
 a low-priority interrupt.
 
-See `buzzer.h` for more information about how buzzer beeps are specified.
+See `buzzer-music.h` for more information about how to write music for the
+buzzer.  Except for the allowed range of notes and the volume feature, the
+buzzer music library used in this example is compatible with the
+[OrangutanBuzzer] module in libpololu-avr and the [PololuBuzzer library for
+Arduino][PololuBuzzer], so most of the songs in the [3pi Tune Library forum
+thread][tunes] should work, and most songs written for the A-Star 32U4
+controllers, Zumo 32U4 Robot, Balboa 32U4 Robot, or 3pi Robot should also work.
 
 
 ## Getting started
@@ -42,5 +48,9 @@ applications:
 - system.h
 - time.c, time.h
 - buzzer.h, buzzer.c
+- buzzer-music.h, buzzer-music.c
 
 [buzzer]: https://www.pololu.com/product/1484
+[OrangutanBuzzer]: https://github.com/pololu/libpololu-avr/blob/master/src/OrangutanBuzzer/OrangutanBuzzer.h
+[PololuBuzzer]: https://github.com/pololu/pololu-buzzer-arduino
+[tunes]: https://forum.pololu.com/t/3pi-tune-library/1305

@@ -64,6 +64,13 @@
 //
 //   '!' resets all persistent settings to their defaults.
 //
+// The correct ordering for a note and its modifiers is:
+//
+// 1. Octave modifiers ('<' or '>')
+// 2. Note letter (e.g. 'a')
+// 3. Sharps and flats ('+', '#', '-')
+// 4. Dots ('.')
+//
 // The following plays a c major scale up and back down:
 //   play("!L16 cdefgab>cbagfedc");
 //
