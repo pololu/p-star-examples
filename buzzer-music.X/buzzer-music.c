@@ -45,19 +45,22 @@ const uint16_t buzzerHalfPeriodTableOctaveMin[12] =
 // This table holds the timeouts of whole notes in octave 7 at a tempo of 120
 // beats (quarter notes) per minute.  So this is the number of buzzer periods
 // that happen in a whole note (2 s), so it is just the frequency of the note in
-// Hz times 2.
-const uint16_t buzzerTimeoutTableOctaveMaxTempo120[12] =
+// Hz times 2.  Spot 12 is for rest notes, which are treated as 1 kHz by the
+// lower-level buzzer library.
+const uint16_t buzzerTimeoutTableOctaveMaxTempo120[13] =
 {
     4186, 4435, 4699, 4978, 5274, 5588,
     5920, 6272, 6645, 7040, 7458, 7902,
+    2000,  // For rest notes
 };
 
 // This is a writable copy of the timeout table above that we modify if the user
 // changes the tempo.
-uint16_t buzzerTimeoutTableOctaveMax[12] =
+uint16_t buzzerTimeoutTableOctaveMax[13] =
 {
     4186, 4435, 4699, 4978, 5274, 5588,
     5920, 6272, 6645, 7040, 7458, 7902,
+    2000,  // For rest notes
 };
 
 uint8_t buzzerMusicRunning = 0;
@@ -74,7 +77,7 @@ uint8_t buzzerDefaultDurationDivider = 4;
 // least 15 or we will have an overflow in the calculations.
 static void buzzerMusicSetTempo(uint16_t tempo)
 {
-    for (uint8_t i = 0; i < 11; i++)
+    for (uint8_t i = 0; i < 13; i++)
     {
         buzzerTimeoutTableOctaveMax[i] =
             (uint32_t)buzzerTimeoutTableOctaveMaxTempo120[i] * 120 / tempo;
@@ -244,7 +247,7 @@ parseCharacter:
     {
         // Rest note
         halfPeriod = 0;
-        timeout = 2000 / durationDivider;
+        timeout = buzzerTimeoutTableOctaveMax[12] / durationDivider;
     }
     else
     {
