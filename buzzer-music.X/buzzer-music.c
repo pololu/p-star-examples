@@ -73,6 +73,12 @@ uint8_t buzzerDefaultOctave = 4;
 // 1 = whole, 2 = half, 3 = one third of a whole note, 4 = quarter note
 uint8_t buzzerDefaultDurationDivider = 4;
 
+// 1 if we are playing in staccato mode, 0 for legato.
+uint8_t buzzerMusicStaccato = 0;
+
+// If non-zero, the next note will be an implied rest after a staccato note.
+uint16_t buzzerMusicUpcomingStaccatoRest = 0;
+
 // Sets the tempo (number of quarter notes per minute).  The tempo must be at
 // least 15 or we will have an overflow in the calculations.
 static void buzzerMusicSetTempo(uint16_t tempo)
@@ -89,12 +95,14 @@ static void buzzerMusicResetToDefaults()
     buzzerDefaultOctave = 4;
     buzzerDefaultDurationDivider = 4;
     buzzerMusicSetTempo(120);
+    buzzerMusicStaccato = 0;
 }
 
 void buzzerMusicPlay(const char * sequence)
 {
     buzzerSequence = sequence;
     buzzerMusicRunning = 1;
+    buzzerMusicUpcomingStaccatoRest = 0;
 }
 
 void buzzerMusicStop()
@@ -130,6 +138,13 @@ void buzzerMusicService()
 {
     if (!buzzerMusicRunning || buzzerNextToneReady())
     {
+        return;
+    }
+
+    if (buzzerMusicUpcomingStaccatoRest)
+    {
+        buzzerPlayRawToneNext(0, buzzerMusicUpcomingStaccatoRest);
+        buzzerMusicUpcomingStaccatoRest = 0;
         return;
     }
 
@@ -182,6 +197,19 @@ parseCharacter:
         break;
     case 'l':
         buzzerDefaultDurationDivider = durationDivider = buzzerMusicGetNumber();
+        goto parseCharacter;
+    case 'm':
+        switch (*buzzerSequence++)
+        {
+        case 's':
+        case 'S':
+            buzzerMusicStaccato = 1;
+            break;
+        case 'l':
+        case 'L':
+            buzzerMusicStaccato = 0;
+            break;
+        }
         goto parseCharacter;
     case 'o':
         buzzerDefaultOctave = octave = buzzerMusicGetNumber();
@@ -264,6 +292,17 @@ parseCharacter:
         buzzerSequence++;
         timeout += dotValue;
         dotValue /= 2;
+    }
+
+    if (buzzerMusicStaccato && !rest)
+    {
+        // We want to set the upcoming rest to be half the length of the note we
+        // are about to play.  But our low-level buzzer library requires rests
+        // to be specified in milliseconds, so we have to do a unit conversion.
+        buzzerMusicUpcomingStaccatoRest = (uint32_t)timeout * halfPeriod / 3000;
+
+        // Make this note be half the duration that it normally would be.
+        timeout = (timeout >> 1);
     }
 
     buzzerPlayRawToneNext(halfPeriod, timeout);
