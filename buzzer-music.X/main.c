@@ -7,7 +7,7 @@ void interrupt low_priority lowIsr()
     buzzerIsr();
 }
 
-void main(void)
+void main()
 {
     timeInit();
 
@@ -29,8 +29,5 @@ void main(void)
             lastPlayTime = timeMs;
             buzzerMusicPlay("!L16 cdegreg4");
         }
-
-        // Start the bootloader if the user shorts RB6 to VDD.
-        if (PORTBbits.RB6) { asm("goto 4"); }
     }
 }

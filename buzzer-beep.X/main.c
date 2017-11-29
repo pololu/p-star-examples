@@ -28,8 +28,5 @@ void main()
             lastBeepTime = timeMs;
             buzzerPlayRawTone(3409, 22);  // 440 Hz, 50 ms
         }
-
-        // Start the bootloader if the user shorts RB6 to VDD.
-        if (PORTBbits.RB6) { asm("goto 4"); }
     }
 }
