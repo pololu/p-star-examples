@@ -86,6 +86,6 @@ bit buzzerMusicIsPlaying();
 
 // You should call this regularly while playing music (and it is OK to call it
 // at other times too).
-void buzzerMusicSerivce();
+void buzzerMusicService();
 
 #endif
